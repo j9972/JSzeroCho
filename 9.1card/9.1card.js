@@ -33,6 +33,8 @@ function cardSetting(w,h) {
         document.body.appendChild(clone);
         
 
+
+        
         (function (c) {
             // 클릭했을때 발생하는거 
             clone.addEventListener('click', () => {
