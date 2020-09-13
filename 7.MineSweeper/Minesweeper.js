@@ -20,7 +20,6 @@ document.querySelector('#exec').addEventListener('click', function() {
     열은칸 = 0;
     중단플래그 = false;
     var hor = parseInt(document.querySelector('#hor').value);
-
     var ver = parseInt(document.querySelector('#ver').value);
     var mine = parseInt(document.querySelector('#mine').value);
     console.log(hor,ver,mine);
@@ -146,7 +145,7 @@ document.querySelector('#exec').addEventListener('click', function() {
                             var 부모tbody = e.currentTarget.parentNode.parentNode;
                             var 옆칸칸 = Array.prototype.indexOf.call(부모tr.children, 옆칸);
                             var 옆칸줄 = Array.prototype.indexOf.call(부모tbody.children, 부모tr);
-                            if(dataset[옆칸줄][옆칸칸] !== 코드표.지뢰) {
+                            if(dataset[옆칸줄][옆칸칸] !== 코드표.지뢰) { // 효율성 개선
                                 옆칸.click();
                             }
                         });
