@@ -20,7 +20,6 @@ document.querySelector('#exec').addEventListener('click', function() {
     열은칸 = 0;
     중단플래그 = false;
     var hor = parseInt(document.querySelector('#hor').value);
-
     var ver = parseInt(document.querySelector('#ver').value);
     var mine = parseInt(document.querySelector('#mine').value);
     console.log(hor,ver,mine);
