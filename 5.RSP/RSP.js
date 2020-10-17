@@ -53,9 +53,7 @@ document.querySelectorAll('.btn').forEach(function(btn) {
             인터벌메이커();
         }, 1000);
         var 나의선택 = this.textContent;
-        console.log(나의선택);
         var 나의점수 = 점수표[나의선택];
-        console.log(나의점수);
         var 컴퓨터점수 = 점수표[컴퓨터의선택(이미지좌표)];
         var 점수차 = 나의점수 - 컴퓨터점수;
         if (점수차 === 0) {
@@ -77,4 +75,5 @@ var 인터벌2 = setInterval(function() {
   console.log(시작값);
   시작값 -= 1;
 }, 1000);
+
 

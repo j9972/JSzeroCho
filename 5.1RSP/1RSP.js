@@ -33,6 +33,7 @@ var score = {
     rock : 0,
     paper : -1,
 }
+
 var rsb = document.getElementsByClassName('resultBox');
 
 var count = 0;
@@ -71,8 +72,3 @@ document.querySelectorAll('.btn').forEach( (btn) =>  {
         }
     })
 })
-
-
-
-
-

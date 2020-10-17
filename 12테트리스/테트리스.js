@@ -2,7 +2,7 @@ var tetris = document.querySelector('#tetris');
 var tetrisData = [];
 var currentBlock;
 var nextBlock;
-var currentTopLeft = [0, 3];
+var currentTopLeft = [0, 3]; // 도형이 시작되는 지점
 var blocks = [
   {
     name: 's', // 네모
@@ -201,9 +201,28 @@ var blocks = [
 
 const colors = ['red', 'orange', 'yellow', 'green', 'blue', 'navy', 'violet'];
 
+
+
+
+// const 변수 이름 = 값 -> 상수로써 항상 같다 ( 변하지 않는 값 -> 수정할 수 없는 변수, const -> 블록 스코프)
+// let 변수 이름 = 값 -> 변하는 값을 말하는 것. ( var과 다르게 scope가 다름 let -> 블록 스코프, var -> 블록스코프  )
 const isActiveBlock = value => (value > 0 && value < 10);
 const isInvalidBlock = value => (value === undefined || value >= 10);
+// isActiveBlock 움직이는 칸, isInvalidBlock 움직일수 없는 칸
+// const 함수명 = () => {} 랑 function 함수명() {} 이 같다. / this 가 다르기 때문에 둘다 쓰인다.
+// const 함수명 = () => { return } 을 'cosnt 함수명 = () => 리턴값'으로 줄일수있다
 
+
+    // [...Array(숫자).keys()] -> ...은 spread라는 최신 문법  ( 0 ~ 숫자 -1 까지를 만들어준다. 0 ~ 19 까지 for문없이 만들어준다. )
+    // 0 부터 숫자-1 이 아니라 1부터 숫자까지 나타내려면 1대1 대응인 map() 쓰기 -> [...Array(숫자).keys().map((v) => v+1)] 이런식으로 쓰기
+/*    
+     [...Array(20).keys()]
+     var arr
+     for(var i = 0; i < 20; i++)
+      arr.push(i); 와 같은 문법 
+*/    
+
+    // ex) ...[1,2,3] -> 1,2,3 ( 배열에 ...을 붙이면 요소들이 빠져나온다 ) -> func(...[1,2,3]) -> func(1,2,3)
 function init() {
   const fragment = document.createDocumentFragment();
   [...Array(20).keys()].forEach((col, i) => {
@@ -248,7 +267,7 @@ function drawNext() { // 다음 블록 그리는 함수
 
 function generate() { // 테트리스 블록 생성
   if (!currentBlock) {
-    currentBlock = blocks[Math.floor(Math.random() * blocks.length)];
+    currentBlock = blocks[Math.floor(Math.random() * blocks.length)]; // 랜덤하게 블록을 뽑는중
   } else {
     currentBlock = nextBlock;
   }
@@ -256,16 +275,16 @@ function generate() { // 테트리스 블록 생성
   nextBlock = blocks[Math.floor(Math.random() * blocks.length)]; // 다음 블록 미리 생성
   console.log(currentBlock);
   drawNext();
-  currentTopLeft = [-1, 3];
+  currentTopLeft = [-1, 3]; // 가상의 칸을 하나 더 만듬 -> 우리가 블룩을 한칸아래에서 만들어지겠끔 해놔서
   let isGameOver = false;
-  currentBlock.shape[0].slice(1).forEach((col, i) => { // 게임 오버 판단
+  currentBlock.shape[0].slice(1).forEach((col, i) => { // 게임 오버 판단 
     col.forEach((row, j) => {
       if (row && tetrisData[i][j + 3]) {
         isGameOver = true;
       }
     });
   });
-  currentBlock.shape[0].slice(1).forEach((col, i) => { // 블록 데이터 생성
+  currentBlock.shape[0].slice(1).forEach((col, i) => { // 블록 데이터 생성 -> slice(1)을 함으로써 2 x 3 블록으로 만들어 준다.
     console.log(currentBlock.shape[0], currentBlock.shape[0].slice(1), col);
     col.forEach((row, j) => {
       if (row) {
@@ -348,7 +367,8 @@ function tick() { // 한 칸 아래로
   }
 }
 
-let int = setInterval(tick, 2000);
+let int = setInterval(tick, 2000); // 2초마다 한칸씩 이동
+// 진입점
 init();
 generate();
 

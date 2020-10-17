@@ -108,9 +108,7 @@ var 상대 = {
       }
     }
   }
-
-  
-  
+   
   function 카드돔연결(데이터, 돔, 영웅) {
     var 카드 = document.querySelector('.card-hidden .card').cloneNode(true);
     카드.querySelector('.card-cost').textContent = 데이터.cost;

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Do while 홀수합</title>
+</head>
+<body>
+    <p>do - while문으로 홀수합 구하기</p>
+    <div></div>
+    <script>
+        var i = 1;
+        var sum = 0;
+        do {
+            if ( i < 9 ) {
+                document.write(i, " + ");
+            } else {
+                document.write(i);
+            }
+            sum += i;
+            i += 2;
+        }while(i < 10)
+        document.write(' = ', sum);
+    </script>
+</body>
+</html>
