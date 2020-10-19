@@ -14,7 +14,7 @@ function cptPick(imageSpot) {
 var itv;
 function itvMaker() {
     itv = setInterval(() => {
-        if( imageSpot === rsp.rock) {
+        if( imageSpot === rsp.rock ) {
             imageSpot = rsp.sis;
         } else if (imageSpot === rsp.sis) {
             imageSpot = rsp.paper;
