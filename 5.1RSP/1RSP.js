@@ -69,6 +69,8 @@ document.querySelectorAll('.btn').forEach( (btn) =>  {
         if(count > 3) {
             clearInterval(itv);
             rsb[0].textContent = '종료됩니다';
+            count = 0;
         }
     })
 })
+
