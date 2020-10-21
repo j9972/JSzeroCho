@@ -1,5 +1,4 @@
 // var 로 만들어 놓고 const let으로 바꾸는 리팩토링
-
 var imgSpot = 0;
 var rsp = {
     rock : '0',
@@ -11,12 +10,12 @@ function cpt(imgSpot) {
     //Object.entries(객체) -> 객체를 배열로 바꿀 수 있다.
     return Object.entries(rsp).find((v) => {
         return v[1] === imgSpot;
-        // v[1]에서 1인 이유는 rsp에서 좌표 idx가 1
+          // v[1]에서 1인 이유는 rsp에서 좌표 idx가 1
     })[0];
 }
 
 var itv;
-function itvMaker() {
+function itvM() {
     itv = setInterval(() => {
         if( imgSpot === rsp.rock ) {
             imgSpot = rsp.sis;
@@ -30,29 +29,29 @@ function itvMaker() {
     }, 100);
 }
 
-itvMaker();
+itvM();
 
-var score = {
+const score = {
     sis : 1,
     rock : 0,
     paper : -1,
 }
 
-var rsb = document.querySelector('.resultBox');
+const rsb = document.querySelector('.resultBox');
 
 var count = 0;
 document.querySelectorAll('.btn').forEach( (btn) =>  {
     btn.addEventListener('click', function(e) {
         e.preventDefault();
-        clearInterval(itv); // 인터벌 중지
+        clearInterval(itv);
         setTimeout(() => {
-            itvMaker();
+            itvM();
         }, 1000);
-        var myChoice = this.textContent;
-        var myScore = score[myChoice];
-        var cptScore = score[cpt(imgSpot)];
-        var scoreGap = myScore - cptScore;
-        console.log(myChoice, myScore , cptScore , scoreGap);
+        //var myChoice = this.textContent;
+        const myScore = score[this.textContent];
+        const cptScore = score[cpt(imgSpot)];
+        const scoreGap = myScore - cptScore;
+        console.log(this.textContent, myScore , cptScore , scoreGap);
         if (scoreGap === 0) {
             rsb.textContent = '비 - 김';
             console.log('비겼습니다');
@@ -70,12 +69,16 @@ document.querySelectorAll('.btn').forEach( (btn) =>  {
         } else {
             rsb.textContent = 'error';
             console.log('뭔가 잘못됨');
+            
         }
-        if(count > 3) {
+        if(count >= 3) {
             clearInterval(itv);
-            rsb[0].textContent = '종료됩니다';
+            rsb.textContent = '종료됩니다';
+            console.log('종 - 료');
             count = 0;
         }
     })
 })
+
+
 

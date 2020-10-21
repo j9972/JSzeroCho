@@ -48,6 +48,7 @@ document.querySelectorAll('.btn').forEach( (btn) =>  {
         var myScore = score[myChoice];
         var cptScore = score[cptPick(imageSpot)];
         var scoreGap = myScore - cptScore;
+        console.log(myChoice, myScore , cptScore , scoreGap);
         if (scoreGap === 0) {
             rsb[0].textContent = '비 - 김';
             console.log('비겼습니다');
