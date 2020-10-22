@@ -13,7 +13,7 @@ var call = function(e) {
     var idxcan = cans[idxjul].indexOf(e.target);
 
     if(cans[idxjul][idxcan].textContent !== ' ') {
-        console.log('빈칸이 아닙니다.', cans[idxjul][idxcan].textContent);
+        console.log('빈칸이 아닙니다.', cans[idxjul][idxcan].textContent, 'a');
         resBox.textContent ='빈칸이 아닙니다 다시 클릭하세요.';
         return;
     }
@@ -21,36 +21,37 @@ var call = function(e) {
 
     cans.forEach((trClass) => {
         trClass.forEach((tdClass) => {
-            cans[idxjul][idxcan].textContent = '';
+            tdClass.textContent = ' ';
         })
     })
 
     subCan = subCan.filter((e) => {
-        return !resBox.textContent;
+        //return !resBox.textContent;
+        return !cans[idxjul][idxcan].textContent;
     })
 
     //win
-    if(resBox) {
+    if(result) {
         reset(false);
     }
-    // 빈칸이 없음
-    if(cans[idxjul][idxcan].length < 0) {
-        reset(ture);
+    // 빈칸이 없음 -> 무승부
+    if(subCan.length === 0) {
+        reset(true);
     }
     else {
         if(turn === 'X') {
             turn = 'O';
-        } else {
-            turn ='X';
-        }
+        } 
 
         setTimeout(() => {
             var cptChosing = subCan[Math.floor(Math.random() * subCan.length)];
+            cptChosing.textContent = turn;
 
             var idxjul = juls.indexOf(e.target.parentNode);
             var idxcan = cans[idxjul].indexOf(e.target);
+            var result = resultingCheck(idxjul, idxcan);
 
-            if(resBox) {
+            if(result) {
                 reset(true);
             }
             turn = 'X';
@@ -75,7 +76,7 @@ function resultingCheck(idxjul, idxcan) {
     else if (cans[0][0].textContent === turn && cans[1][1].textContent === turn && cans[2][2].textContent === turn) {
         full = true;
     }
-    
+    return full;
 }
 
 function reset(sameResult) {
@@ -87,7 +88,7 @@ function reset(sameResult) {
     setTimeout(() => {
         cans.forEach((trClass) => {
             trClass.forEach((tdClass) => {
-                cans[idxjul][idxcan].textContent = '';
+                tdClass.textContent = '';
             })
         })
         turn = 'X';
