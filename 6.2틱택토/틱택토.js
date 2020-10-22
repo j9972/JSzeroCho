@@ -8,56 +8,57 @@ var call = function(e) {
     if(turn === 'O') {
         return;
     }
-
     var idxjul = juls.indexOf(e.target.parentNode);
     var idxcan = cans[idxjul].indexOf(e.target);
-
-    if(cans[idxjul][idxcan].textContent !== ' ') {
+    cans[idxjul][idxcan].textContent = turn;
+    
+    if(cans[idxjul][idxcan].textContent !== '') {
         console.log('빈칸이 아닙니다.', cans[idxjul][idxcan].textContent, 'a');
         resBox.textContent ='빈칸이 아닙니다 다시 클릭하세요.';
-        return;
-    }
-    var subCan = [];
-
-    cans.forEach((trClass) => {
-        trClass.forEach((tdClass) => {
-            tdClass.textContent = ' ';
+    } else {
+        console.log('빈칸입니다');
+        var result = resultingCheck(idxjul, idxcan);
+        var subCan = [];
+        
+        subCan = subCan.filter((v) => {
+            return !v.textContent;
         })
-    })
+        
+        cans.forEach((trClass) => {
+            trClass.forEach((tdClass) => {
+                subCan.push(tdClass);
+            })
+        })
+        //win
+        if(result) {
+            reset(false);
+        }
+        // 빈칸이 없음 -> 무승부
+        if(subCan.length === 0) {
+            reset(true);
+        }
+        else {
+            if(turn === 'X') {
+                turn = 'O';
+            } 
 
-    subCan = subCan.filter((e) => {
-        //return !resBox.textContent;
-        return !cans[idxjul][idxcan].textContent;
-    })
+            setTimeout(() => {
+                var cptChosing = subCan[Math.floor(Math.random() * subCan.length)];
+                cptChosing.textContent = turn;
 
-    //win
-    if(result) {
-        reset(false);
-    }
-    // 빈칸이 없음 -> 무승부
-    if(subCan.length === 0) {
-        reset(true);
-    }
-    else {
-        if(turn === 'X') {
-            turn = 'O';
-        } 
+                var idxjul = juls.indexOf(e.target.parentNode);
+                var idxcan = cans[idxjul].indexOf(e.target);
+                var result = resultingCheck(idxjul, idxcan);
 
-        setTimeout(() => {
-            var cptChosing = subCan[Math.floor(Math.random() * subCan.length)];
-            cptChosing.textContent = turn;
-
-            var idxjul = juls.indexOf(e.target.parentNode);
-            var idxcan = cans[idxjul].indexOf(e.target);
-            var result = resultingCheck(idxjul, idxcan);
-
-            if(result) {
-                reset(true);
-            }
-            turn = 'X';
-        }, 1000)
+                if(result) {
+                    reset();
+                }
+                turn = 'X';
+            }, 1000)
+        }
     }
 }
+
 
 function resultingCheck(idxjul, idxcan) {
     var full = false;
@@ -86,6 +87,7 @@ function reset(sameResult) {
         resBox.textContent = turn + '님이 승리하였습니다';
     }
     setTimeout(() => {
+        resBox.textContent = '';
         cans.forEach((trClass) => {
             trClass.forEach((tdClass) => {
                 tdClass.textContent = '';
