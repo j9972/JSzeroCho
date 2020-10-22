@@ -82,7 +82,7 @@ function CheckingTheResult(idxjul,idxcan) {
 
 function reset(samsam) {
     if(samsam) {
-        resultId.textContent = '무승부';
+        resultanId.textContent = '무승부';
     } else {
         resultId.textContent = turn + '님이 승리';
     }
