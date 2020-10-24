@@ -12,6 +12,8 @@ var codeGraph = {
     normal: 0,
 }
 
+
+
 document.querySelector('#exec').addEventListener('click', () => {
     tbody.innerHTML = '';
     dataSet = [];
@@ -101,7 +103,7 @@ document.querySelector('#exec').addEventListener('click', () => {
                 var line = Array.prototype.indexOf.call(parnetsTbody.children, parentsTr);
 
                 // 놓친 부분
-                if([codeGraph.opened, codeGraph.flag, codeGraph.flagMine, codeGraph.questMine, codeGraph.mark].includes(dataSet[line][box])) {
+                if([codeGraph.opened, codeGraph.flag, codeGraph.flagMine, codeGraph.questMine, codeGraph.questmark].includes(dataSet[line][box])) {
                     return;
                 }
 
@@ -172,9 +174,12 @@ document.querySelector('#exec').addEventListener('click', () => {
     };
     
     //지뢰 심기 -> 다시 보기
-    for(var k = 0; k < shuffle.length; k++) {
-        var w = shuffle[k] % ver;
-        var h = Math.floor(shuffle[k] / hor);
+    for(var k = 0; k < shuffle.length; k++) { // ex shuffle[k] === 59
+        // 00 01 02 03 04
+        // 10 11 12 13 14
+        // 20 21 22 23 24
+        var h = Math.floor(shuffle[k] / hor); // floor 반내림 
+        var w = shuffle[k] % ver;// 0 ~ 9 ( % === 나머지 )
         tbody.children[h].children[w].textContent = 'X';
         dataSet[h][w] = codeGraph.mineScore;
     }
