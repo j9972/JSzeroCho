@@ -58,6 +58,10 @@ document.querySelector('#exec').addEventListener('click', () => {
                 var box = Array.prototype.indexOf.call(parentsTr.children, e.currentTarget);
                 var line = Array.prototype.indexOf.call(parentsTbody.children, parentsTr);
 
+                if(dataSet[line][box] === codeGraph.opened) {
+                    return;
+                } 
+
                 if(e.currentTarget.textContent === '' || e.currentTarget.textContent === 'X') {
                     e.currentTarget.classList.add('flag');
                     e.currentTarget.textContent = '!';
