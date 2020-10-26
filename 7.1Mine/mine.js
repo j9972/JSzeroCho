@@ -46,6 +46,7 @@ document.querySelector('#exec').addEventListener('click', () => {
         for(var j = 0; j < hor; j++) {
             var td = document.createElement('td');
             arr.push(codeGraph.normal);
+            // 오류가 questMark에서 좌클릭이 된다.
             // 우클릭으로 빈칸/X => 깃발 => 물음표 => 빈칸/X 만들기
             td.addEventListener('contextmenu', (e)=> {  
                 e.preventDefault();
@@ -58,6 +59,7 @@ document.querySelector('#exec').addEventListener('click', () => {
                 var box = Array.prototype.indexOf.call(parentsTr.children, e.currentTarget);
                 var line = Array.prototype.indexOf.call(parentsTbody.children, parentsTr);
 
+                // 열린칸에서는 우클릭이 안됨.
                 if(dataSet[line][box] === codeGraph.opened) {
                     return;
                 } 
@@ -107,7 +109,9 @@ document.querySelector('#exec').addEventListener('click', () => {
                 var line = Array.prototype.indexOf.call(parnetsTbody.children, parentsTr);
 
                 // 놓친 부분
-                if([codeGraph.opened, codeGraph.flag, codeGraph.flagMine, codeGraph.questMine, codeGraph.questmark].includes(dataSet[line][box])) {
+                // questMark 이부분 타이핑 오타때문에 quest 부분에서 좌클릭이 됬음
+                if([codeGraph.opened, codeGraph.flag, codeGraph.flagMine, codeGraph.questMine, codeGraph.questMark].includes(dataSet[line][box])) {
+                    //console.log(codeGraph.questMark,1, codeGraph.questMine, 2)
                     return;
                 }
 
@@ -156,6 +160,7 @@ document.querySelector('#exec').addEventListener('click', () => {
                                 tbody.children[line + 1].children[box + 1],
                             ]);
                         }
+                        // (v) => !!v 는 배열에서 null이나 빈문자열, undefined를 제거하는 것
                         neighborBox.filter((v) => !!v).forEach((sideBox) => {
                             var parentsTr = e.currentTarget.parentNode;
                             var parnetsTbody = e.currentTarget.parentNode.parentNode;

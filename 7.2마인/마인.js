@@ -30,6 +30,7 @@ document.querySelector('#exec').addEventListener('click', (e) => {
     var sub = Array(ver * hor).fill().map((component, idx) => {
         return idx;
     });
+    // sub.length가 100이다. -> while의 조건이 100부터 81까지 총 20개.
 
     var shuffle = [];
     while(sub.length > hor * ver - mine) {
@@ -93,7 +94,7 @@ document.querySelector('#exec').addEventListener('click', (e) => {
                         e.currentTarget.textContent = '';
                         dataSet[line][box] = codeGraph.normal;
                     }
-                }s
+                }
             });
 
             // 좌클릭
@@ -137,20 +138,20 @@ document.querySelector('#exec').addEventListener('click', (e) => {
                         var neighborBox =[];
                         if(tbody.children[line - 1]) {
                             neighborBox = neighborBox.concat([
-                                tbody.children[line - 1][box - 1], 
-                                tbody.children[line - 1][box], 
-                                tbody.children[line - 1][box + 1]
+                                tbody.children[line - 1].children[box - 1], 
+                                tbody.children[line - 1].children[box], 
+                                tbody.children[line - 1].children[box + 1]
                             ]);
                         }
                         neighborBox = neighborBox.concat([
-                            tbody.children[line][box - 1], 
-                            tbody.children[line][box + 1]
+                            tbody.children[line].children[box - 1], 
+                            tbody.children[line].children[box + 1]
                         ]);
                         if(tbody.children[line + 1]) {
                             neighborBox = neighborBox.concat([
-                                tbody.children[line + 1][box - 1], 
-                                tbody.children[line + 1][box], 
-                                tbody.children[line + 1][box + 1]
+                                tbody.children[line + 1].children[box - 1], 
+                                tbody.children[line + 1].children[box], 
+                                tbody.children[line + 1].children[box + 1]
                             ]);
                         }
                         neighborBox.filter((v) => !!v).forEach((sideBox) => {
@@ -176,9 +177,6 @@ document.querySelector('#exec').addEventListener('click', (e) => {
 
     // 심기
     for(var k = 0; k < shuffle.length; k++) { // ex shuffle[k] === 59
-        // 00 01 02 03 04
-        // 10 11 12 13 14
-        // 20 21 22 23 24
         var h = Math.floor(shuffle[k] / hor); // floor 반내림 
         var w = shuffle[k] % ver;// 0 ~ 9 ( % === 나머지 )
         tbody.children[h].children[w].textContent = 'X';
