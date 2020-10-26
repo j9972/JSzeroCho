@@ -1,57 +1,54 @@
 // op -> opened Box , stoppingflag - 중단하는 부분
-var tbody = document.querySelector('#table tbody');
-var dataSet = [];
-var stopingFlag = false;
-var op = 0;
-var codeGraph = {
-    opened: -1,
-    questMark: -2,
-    flag: -3,
-    flagMine: -4,
-    questMine: -5,
-    mineScore: 1,
-    normal: 0,
-}
-
-var res = document.querySelector('#result');
+const tbody = document.querySelector('#table tbody');
+const res = document.querySelector('#result');
 
 document.querySelector('#exec').addEventListener('click', () => {
     tbody.innerHTML = '';
     res.textContent = '';
-    op = 0;
-    stopingFlag = false;
-
-    var hor = parseInt(document.querySelector('#hor').value);
-    var ver = parseInt(document.querySelector('#ver').value);
-    var mine = parseInt(document.querySelector('#mine').value);
+    let op = 0;
+    let stopingFlag = false;
+    let dataSet = [];
+    const codeGraph = {
+        opened: -1,
+        questMark: -2,
+        flag: -3,
+        flagMine: -4,
+        questMine: -5,
+        mineScore: 1,
+        normal: 0,
+    }
+    // input 부분은 value로 써준다.
+    const hor = parseInt(document.querySelector('#hor').value);
+    const ver = parseInt(document.querySelector('#ver').value);
+    const mine = parseInt(document.querySelector('#mine').value);
     console.log(hor, ver, mine);
 
     //지뢰 위치 
-    var sub = Array(hor * ver).fill().map((v, idx) => {
+    let sub = Array(hor * ver).fill().map((v, idx) => {
         return idx;
     });
     
-    var shuffle = [];
+    let shuffle = [];
     while(sub.length > hor * ver - mine) {
-        var moved = sub.splice(Math.floor(Math.random() * sub.length), 1)[0];
+        let moved = sub.splice(Math.floor(Math.random() * sub.length), 1)[0];
         shuffle.push(moved);
     };
     console.log(shuffle);
 
     // 지뢰의 위치를 알기 쉽게 내림차순으로 정렬
-    var sortMineSpot = shuffle.slice(0,20).sort((r,p) => {
+    let sortMineSpot = shuffle.slice(0,20).sort((r,p) => {
         return r - p;
     })
     console.log('sortMineSpot', sortMineSpot);
 
     //지뢰 테이블
-    for(var i = 0; i < hor; i++) {
-        var arr = [];
-        var tr = document.createElement('tr');
+    for(let i = 0; i < hor; i++) {
+        let arr = [];
+        const tr = document.createElement('tr');
         dataSet.push(arr);
-        for(var j = 0; j < ver; j++) {
+        for(let j = 0; j < ver; j++) {
             arr.push(codeGraph.normal);
-            var td = document.createElement('td');
+            const td = document.createElement('td');
 
             // 우클릭 ( 빈칸/X -> ! -> ?)
             td.addEventListener('contextmenu', (e) => {
@@ -61,10 +58,10 @@ document.querySelector('#exec').addEventListener('click', () => {
                     return;
                 }
 
-                var parentTr = e.currentTarget.parentNode;
-                var parentTbody = e.currentTarget.parentNode.parentNode;
-                var box = Array.prototype.indexOf.call(parentTr.children, e.currentTarget);
-                var line = Array.prototype.indexOf.call(parentTbody.children, parentTr);
+                const parentTr = e.currentTarget.parentNode;
+                const parentTbody = e.currentTarget.parentNode.parentNode;
+                const box = Array.prototype.indexOf.call(parentTr.children, e.currentTarget);
+                const line = Array.prototype.indexOf.call(parentTbody.children, parentTr);
 
                 if(dataSet[line][box] === codeGraph.opened) {
                     return;
@@ -110,10 +107,10 @@ document.querySelector('#exec').addEventListener('click', () => {
                     return;
                 }
 
-                var parentTr = e.currentTarget.parentNode;
-                var parentTbody = e.currentTarget.parentNode.parentNode;
-                var box = Array.prototype.indexOf.call(parentTr.children, e.currentTarget);
-                var line = Array.prototype.indexOf.call(parentTbody.children, parentTr);
+                const parentTr = e.currentTarget.parentNode;
+                const parentTbody = e.currentTarget.parentNode.parentNode;
+                const box = Array.prototype.indexOf.call(parentTr.children, e.currentTarget);
+                const line = Array.prototype.indexOf.call(parentTbody.children, parentTr);
 
                 if([codeGraph.opened, codeGraph.questMark, codeGraph.questMine, 
                     codeGraph.flag, codeGraph.flagMine].includes(dataSet[line][box])) {
@@ -129,7 +126,7 @@ document.querySelector('#exec').addEventListener('click', () => {
                     stopingFlag = true;
                 }
                 else {
-                    var neighbor = [ dataSet[line][box - 1], dataSet[line][box + 1] ];
+                    let neighbor = [ dataSet[line][box - 1], dataSet[line][box + 1] ];
                     if(dataSet[line - 1]) {
                         neighbor = neighbor.concat([ dataSet[line - 1][box - 1] , dataSet[line - 1][box], dataSet[line - 1][box + 1] ]);
                     }
@@ -137,7 +134,7 @@ document.querySelector('#exec').addEventListener('click', () => {
                         neighbor = neighbor.concat([ dataSet[line + 1][box - 1] , dataSet[line + 1][box], dataSet[line + 1][box + 1] ]);
                     }
                     // 지뢰의 개수를 파악해서 나타내는것
-                    var minNum = neighbor.filter((v) => {
+                    let minNum = neighbor.filter((v) => {
                         return [codeGraph.mineScore, codeGraph.flagMine, codeGraph.questMine].includes(v);
                     }).length;
                     
@@ -146,7 +143,7 @@ document.querySelector('#exec').addEventListener('click', () => {
                     dataSet[line][box] = codeGraph.opened;
 
                     if(minNum === 0) {
-                        var neighborBox = [];
+                        let neighborBox = [];
                         if( tbody.children[line - 1]) {
                             // concat으로 배열을 삽입한것을 원래의 변수에 다시 저장을 해줘야 한다.
                             neighborBox = neighborBox.concat([
@@ -168,10 +165,10 @@ document.querySelector('#exec').addEventListener('click', () => {
                         }
                         // (v) => !!v 이거는 undefined이나 null 등을 없애준다.
                         neighborBox.filter((v) => !!v).forEach((sidebox) => {
-                            var parentTr = e.currentTarget.parentNode;
-                            var parentTbody = e.currentTarget.parentNode.parentNode;
-                            var ssidebox = Array.prototype.indexOf.call(parentTr.children, sidebox);
-                            var ssideline = Array.prototype.indexOf.call(parentTbody.children, parentTr);
+                            const parentTr = e.currentTarget.parentNode;
+                            const parentTbody = e.currentTarget.parentNode.parentNode;
+                            const ssidebox = Array.prototype.indexOf.call(parentTr.children, sidebox);
+                            const ssideline = Array.prototype.indexOf.call(parentTbody.children, parentTr);
     
                             /*
                             if(dataSet[ssideline][ssidebox] !== codeGraph.mineScore) {
@@ -197,9 +194,9 @@ document.querySelector('#exec').addEventListener('click', () => {
     };
 
     //지뢰 심기
-    for(var k = 0; k < shuffle.length; k++) {
-        var h = Math.floor(shuffle[k] / hor);
-        var w = shuffle[k] % ver;
+    for(let k = 0; k < shuffle.length; k++) {
+        let h = Math.floor(shuffle[k] / hor);
+        let w = shuffle[k] % ver;
         tbody.children[h].children[w] = 'X';
         dataSet[h][w] = codeGraph.mineScore;
     };
