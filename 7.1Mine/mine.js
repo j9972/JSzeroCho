@@ -13,7 +13,7 @@ var codeGraph = {
     normal: 0,
 }
 
-
+var res = document.querySelector('#result');
 
 document.querySelector('#exec').addEventListener('click', () => {
     tbody.innerHTML = '';
@@ -21,7 +21,7 @@ document.querySelector('#exec').addEventListener('click', () => {
     op = 0;
     // 못쓴 부분
     stopingFlag = false;
-    document.querySelector('#result').textContent = '';
+    res.textContent = '';
     var hor = parseInt(document.querySelector('#hor').value); // 가로
     var ver = parseInt(document.querySelector('#ver').value); // 세로
     var mine = parseInt(document.querySelector('#mine').value);
@@ -121,7 +121,7 @@ document.querySelector('#exec').addEventListener('click', () => {
 
                 if(dataSet[line][box] === codeGraph.mineScore) {
                     e.currentTarget.textContent = '펑';
-                    document.querySelector('#result').textContent = '실패';
+                    res.textContent = '실패';
                     stopingFlag = true;
                 }
                 else {
@@ -175,7 +175,7 @@ document.querySelector('#exec').addEventListener('click', () => {
                 }
                 if(op === hor * ver - mine) {
                     stopingFlag = true;
-                    document.querySelector('#result').textContent = '승리';
+                    res.textContent = '승리';
                 }
             });
             tr.appendChild(td);
