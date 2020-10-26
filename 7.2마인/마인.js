@@ -1,4 +1,4 @@
-// op -> opened Box , stoppingflag - 중단하는 부분
+
 var tbody = document.querySelector('#table tbody');
 var dataSet = [];
 var stopingFlag = false;
