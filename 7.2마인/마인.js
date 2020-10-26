@@ -38,6 +38,7 @@ document.querySelector('#exec').addEventListener('click', () => {
     };
     console.log(shuffle);
 
+    // 지뢰의 위치를 알기 쉽게 내림차순으로 정렬
     var sortMineSpot = shuffle.slice(0,20).sort((r,p) => {
         return r - p;
     })
@@ -135,16 +136,19 @@ document.querySelector('#exec').addEventListener('click', () => {
                     if(dataSet[line + 1]) {
                         neighbor = neighbor.concat([ dataSet[line + 1][box - 1] , dataSet[line + 1][box], dataSet[line + 1][box + 1] ]);
                     }
+                    // 지뢰의 개수를 파악해서 나타내는것
                     var minNum = neighbor.filter((v) => {
                         return [codeGraph.mineScore, codeGraph.flagMine, codeGraph.questMine].includes(v);
                     }).length;
                     
+                    // minNum || ' ' 이 순서가 ' ' || minNum 한번에 터지기는 하는데 숫자가 안나오고 빈칸으로 나오는 에러가 난다.
                     e.currentTarget.textContent = minNum || ' ';
                     dataSet[line][box] = codeGraph.opened;
 
                     if(minNum === 0) {
                         var neighborBox = [];
                         if( tbody.children[line - 1]) {
+                            // concat으로 배열을 삽입한것을 원래의 변수에 다시 저장을 해줘야 한다.
                             neighborBox = neighborBox.concat([
                                 tbody.children[line - 1].children[box - 1],
                                 tbody.children[line - 1].children[box],
@@ -162,15 +166,23 @@ document.querySelector('#exec').addEventListener('click', () => {
                                 tbody.children[line + 1].children[box + 1],
                             ]);
                         }
+                        // (v) => !!v 이거는 undefined이나 null 등을 없애준다.
                         neighborBox.filter((v) => !!v).forEach((sidebox) => {
                             var parentTr = e.currentTarget.parentNode;
                             var parentTbody = e.currentTarget.parentNode.parentNode;
                             var ssidebox = Array.prototype.indexOf.call(parentTr.children, sidebox);
                             var ssideline = Array.prototype.indexOf.call(parentTbody.children, parentTr);
     
+                            /*
                             if(dataSet[ssideline][ssidebox] !== codeGraph.mineScore) {
                                 sidebox.click();
                             }
+                            */
+                           // 이 방식으로 가능하다
+                            if(dataSet[ssideline][ssidebox] === codeGraph.normal, codeGraph.flag, codeGraph.questMark) {
+                                sidebox.click();
+                            }
+                            
                         });          
                     }
                 }
