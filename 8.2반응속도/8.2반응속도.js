@@ -17,6 +17,7 @@ box.addEventListener('click', () => {
     }
     else if (box.classList.contains('ready')) {
         if(!startingTime) {
+            clearTimeout(dateTime);
             box.classList.remove('ready');
             box.classList.add('waiting');
             box.textContent = '성급했어요.';
@@ -28,14 +29,13 @@ box.addEventListener('click', () => {
         }
     }
     else if(box.classList.contains('now')) {
-        box.classList.remove('now');
-        box.classList.add('waiting');
-        box.textContent = '클릭해서 다시 시작하세여';
         endingTime = new Date();
-        console.log(endingTime);
         console.log(endingTime - startingTime + 'ms');
         recording.push(endingTime - startingTime + 'ms');
         startingTime = null;
         endingTime = null;
+        box.classList.remove('now');
+        box.classList.add('waiting');
+        box.textContent = '클릭해서 다시 시작하세여';
     }
 })

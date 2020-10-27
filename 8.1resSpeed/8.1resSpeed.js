@@ -1,4 +1,5 @@
 var Box = document.querySelector('#screen');
+var res = document.querySelector('#result');
 var startTime;
 var endTime;
 var timeOut;
@@ -31,6 +32,7 @@ Box.addEventListener('click', () => {
         endTime = new Date();
         console.log(endTime - startTime + 'ms');
         record.push(endTime - startTime + 'ms');
+        res.textContent = record;
         startTime = null;
         endTime = null;
         Box.classList.remove('now');
