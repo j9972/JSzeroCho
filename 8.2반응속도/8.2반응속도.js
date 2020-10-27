@@ -1,11 +1,12 @@
-var box = document.querySelector('#screen');
-var res = document.querySelector('#result');
-var startingTime;
-var endingTime;
-var dateTime;
-var recording = [];
+const box = document.querySelector('#screen');
+const res = document.querySelector('#result');
+let startingTime;
+let endingTime;
+
 
 box.addEventListener('click', () => {
+    let recording = [];
+    let dateTime;
     if(box.classList.contains('waiting')) {
         box.classList.remove('waiting');
         box.classList.add('ready');
