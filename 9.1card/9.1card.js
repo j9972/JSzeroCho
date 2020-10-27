@@ -1,6 +1,6 @@
 var w = 4;
 var h = 3;
-var colors = ['red', 'red', 'orange', 'orange', 'green', 'green', 'yellow', 'yellow', 'white', 'white', 'pink', 'pink'];
+var colors = ['red', 'red', 'orange', 'orange', 'green', 'green', 'yellow', 'yellow', 'purple', 'purple', 'pink', 'pink'];
 var colorSub = colors.slice();
 var color = [];
 var flag;
@@ -8,32 +8,25 @@ var startTime;
 var clickedCard = [];
 var completedCard = [];
 
+// 문제점 -> 첫번째 할때는 잘되는데 두번째 할때 카드의 색이 없다. 해결
+
 function shuffle() {
     for(var i = 0; colorSub.length > 0; i++) {
-        color = color.concat(colorSub.splice(Math.floor(Math.random() * colorSub.length), 1)); // 배열의 요소가 랜덤으로 빠지면 그것을 새로운 배열 color에 넣는게 concat이다.
+        color = color.concat(colorSub.splice(Math.floor(Math.random() * colorSub.length), 1)[0]);
+         // 배열의 요소가 랜덤으로 빠지면 그것을 새로운 배열 color에 넣는게 concat이다.
+         console.log(color); // 이거는 그냥 빈 배열인데 for문으로 하나씩 색이 들어간다.
     }
 }
-shuffle();
-console.log(color);
-
-// 1. shuffle을 안치면 일단 color[i]가 undefine 
-// 2. shuffle을 쳐도 그 다음 판에 color[i]가 undefine , shuffle()을 console에 넣으면 undefine이 뜸
-
-// 3. card div의 원본이 계속 있어서 13개가 된다.
-// 4. 원본은 클릭이 되지 않는다. 
 
 function cardSetting(w,h) {
     flag = false;
     for(var i = 0; i < w * h ; i++) {
-        const cd = document.getElementsByClassName('card')[0];
+        const cd = document.querySelector('.card');
         const clone = cd.cloneNode(true);
         //console.log(cd,clone);
-        console.log(color[i]); // -> undefined 나는 지점
-        clone.getElementsByClassName('card-back')[0].style.backgroundColor = color[i];
+        console.log(color[i]); // -> undefined 나는 지점 / 여기서 선택된 색이 나오는것이다,
+        clone.querySelector('.card-back').style.backgroundColor = color[i];
         document.body.appendChild(clone);
-        
-
-
         
         (function (c) {
             // 클릭했을때 발생하는거 
@@ -44,10 +37,11 @@ function cardSetting(w,h) {
                     clickedCard.push(c);
                     if(clickedCard.length === 2) {
                         // 색이 맞는경우
-                        if(clickedCard[0].getElementsByClassName('card-back')[0].style.backgroundColor === clickedCard[1].getElementsByClassName('card-back')[0].style.backgroundColor) {
+                        if(clickedCard[0].querySelector('.card-back').style.backgroundColor === clickedCard[1].querySelector('.card-back').style.backgroundColor) {
                             completedCard.push(clickedCard[0]);
                             completedCard.push(clickedCard[1]);
                             clickedCard = [];
+                            
                             // 전부 고른 경우
                             if(completedCard.length == 12) {
                                 setTimeout(() => {
@@ -55,12 +49,12 @@ function cardSetting(w,h) {
                                     alert('걸린시간은 :' +( endTime - startTime ) / 1000+ '초');
                                     console.log('걸린시간은 :' +( endTime - startTime ) / 1000+ '초');
                                     document.querySelector('.wrapper').innerHTML = '';
-                                    startTime = null;
-                                    completedCard = [];
                                     colorSub = colors.slice();
+                                    completedCard = [];
                                     color = [];
-                                    cardSetting(w,h);
+                                    startTime = null;
                                     shuffle();
+                                    cardSetting(w,h);
                                 }, 1000);
                             }
                         }
@@ -86,7 +80,7 @@ function cardSetting(w,h) {
             card.classList.add('flipped');
         }, 1000 + 100 * idx);
     });
-   
+
     setTimeout(() => {
         document.querySelectorAll('.card').forEach((card, idx) => {
             card.classList.remove('flipped');
@@ -95,4 +89,5 @@ function cardSetting(w,h) {
         startTime = new Date();
     }, 5000);
 }
+shuffle();
 cardSetting(w,h);

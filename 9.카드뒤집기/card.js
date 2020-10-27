@@ -25,6 +25,7 @@ function 카드세팅(가로, 세로) {
         cardFront.className = 'card-front';
         var cardBack = document.createElement('div');
         cardBack.className = 'card-back';
+        // div태그랑 그 태그마다에 class를 넣은 것
         cardBack.style.backgroundColor = 색깔[i];
         cardInner.appendChild(cardFront);
         cardInner.appendChild(cardBack);
