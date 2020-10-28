@@ -46,8 +46,8 @@ function cardSetting(w,h) {
                             if(completedCard.length == 12) {
                                 setTimeout(() => {
                                     var endTime = new Date();
-                                    alert('걸린시간은 :' +( endTime - startTime ) / 1000+ '초');
-                                    console.log('걸린시간은 :' +( endTime - startTime ) / 1000+ '초');
+                                    alert('걸린시간은 :' + ( endTime - startTime ) / 1000+ '초');
+                                    console.log('걸린시간은 :' + ( endTime - startTime ) / 1000+ '초');
                                     document.querySelector('.wrapper').innerHTML = '';
                                     colorSub = colors.slice();
                                     completedCard = [];
