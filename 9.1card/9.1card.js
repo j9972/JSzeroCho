@@ -1,6 +1,7 @@
 var w = 4;
 var h = 3;
 var colors = ['red', 'red', 'orange', 'orange', 'green', 'green', 'yellow', 'yellow', 'purple', 'purple', 'pink', 'pink'];
+// slice 함수는 배열의 어느 부분을 짤라서 보여주거나 , 인자가 없다면 전체를 보여주는 것이다.
 var colorSub = colors.slice();
 var color = [];
 var flag;
