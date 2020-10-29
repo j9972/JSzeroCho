@@ -10,12 +10,12 @@ var clicked = [];
 var completed = [];
 var flag;
 
-// function shuffle() {
-//     for(var i = 0; colorSub.length > 0; i++) {
-//         color = colors.concat(colors.splice(Math.floor(Math.random () * colorSub.length), 1)[0]);
-//         console.log(color);
-//     }
-// }
+function shuffle() {
+    for(var i = 0; colorSub.length > 0; i++) {
+        color = color.concat(colorSub.splice(Math.floor(Math.random () * colorSub.length), 1)[0]);
+        console.log(color[i]);
+    }
+}
 
 function cardSetting(w,h) {
     flag = false;
