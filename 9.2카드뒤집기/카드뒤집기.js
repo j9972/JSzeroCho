@@ -1,25 +1,24 @@
 // 결과가 일단 alert도 나오면서 console창에 나오기 / 결과가 브라우저 화면에 나오기
 // 카드의 개수를 12개가 아닌 16개로 늘림
-var w = 4;
-var h = 4;
-var startTime;
-var endTime;
-var colors = ['red','red','yellow','yellow','purple','purple','black','black','pink','pink','green','green','aqua','aqua','gray','gray' ];
-var colorSub = colors.slice();
-var color = [];
-var clicked = [];
-var completed = [];
-var flag;
+const w = 4;
+const h = 4;
+const colors = ['red','red','yellow','yellow','purple','purple','black','black','pink','pink','green','green','aqua','aqua','gray','gray' ];
+let colorSub = colors.slice();
+let color = [];
+let clicked = [];
+let completed = [];
 
 function shuffle() {
-    for(var i = 0; colorSub.length > 0; i++) {
+    for(let i = 0; colorSub.length > 0; i++) {
         color = color.concat(colorSub.splice(Math.floor(Math.random () * colorSub.length), 1)[0]);
-        console.log(color[i]);
+        console.log( i+1 + ":" + color[i]);
     }
 }
 
 function cardSetting(w,h) {
-    flag = false;
+    let startFlag = false;
+    let startTime;
+    let endTime;
     for(let i = 0; i < w * h; i++) {
         const cd = document.querySelector('.card');
         const clone = cd.cloneNode(true);
@@ -53,12 +52,12 @@ function cardSetting(w,h) {
                             }
                         }
                         else {
-                            flag = false;
+                            startFlag = false;
                             setTimeout(() => {
                                 clicked[0].classList.remove('flipped');
                                 clicked[1].classList.remove('flipped');
                                 clicked = [];
-                                flag = true;
+                                startFlag = true;
                             }, 1000);
                         }
                     }
@@ -80,7 +79,7 @@ function cardSetting(w,h) {
         document.querySelectorAll('.card').forEach((card, idx) => {
             card.classList.remove('flipped');
         })
-        flag = true;
+        startFlag = true;
         startTime = new Date();
     },5000);
 }
