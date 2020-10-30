@@ -21,10 +21,14 @@ function reset() {
 }
 
 function randomMaking() {
+    // 비여져 있는 칸을 의미하는 배열
     var emptyArray = []
     data.forEach((wData, i) => {
         wData.forEach((hData, j) =>{
+            // !hData가 의미하는게 뭔지 행데이터
+            // 행데이터가 0일때 true
             if(!hData) {
+                // i랑 j가 의미하는게 뭔지 -> 데이터
                 emptyArray.push([i,j]);
             }
         });
@@ -46,10 +50,12 @@ function randomMaking() {
 function drawing() {
     data.forEach((wData, i) => {
         wData.forEach((hData, j) => {
-            if(hData > 0) {
+            // hData(행데이터) 가 0보다 크고 작음에 따라서 뭘 해주는건지
+            if(hData > 0) { // 0이 없는게 좋다고 생각해서 넣은 코드
                 table.children[i].children[j].textContent = hData;
+                // 화면에 숫자를 표시
             } else {
-                table.children[i].children[j].textContent = '';
+                table.children[i].children[j].textContent = ''; // 0은 표시를 안하는거
             }
         });
     });
@@ -121,6 +127,7 @@ window.addEventListener('mouseup', (e) => {
                 });
             });
             console.log(newData);
+            // 여기 아래코드가 숫자들을 움직여주는 코드
             [1,2,3,4].forEach( (wData, i) => {
                 [1,2,3,4].forEach( (hData, j) => {
                     data[i][j] = newData[i][j] || 0;
