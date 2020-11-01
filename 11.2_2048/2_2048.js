@@ -1,8 +1,8 @@
 var table = document.querySelector('#table');
 var score = document.querySelector('#score');
 var data = [];
-var drag = false;
-var dragging = false;
+var drag;
+var dragging;
 var startSpot;
 var endSpot;
 
@@ -10,11 +10,11 @@ function reset() {
     var fragment = document.createDocumentFragment();
     [1,2,3,4].forEach(() => {
         var wData = [];
-        var tr = document.createElement('tr');
         data.push(wData);
+        var tr = document.createElement('tr');
         [1,2,3,4].forEach(() => {
-            var td = document.createElement('td');
             wData.push(0);
+            var td = document.createElement('td');
             tr.appendChild(td)
         })
         fragment.appendChild(tr);
@@ -32,29 +32,31 @@ function randomDrawing() {
         })
     });
     if(empty.length === 0) {
-        alert('게임종료');
-        // textContent를 쑤는것이 맞는지 모르곘음
-        table.textContent.innerHTML = '';
+        alert('게임종료' + score.textContent);
+        // textContent를 쓰면 안된다. 이유는 화면을 비우는거지 textContent는 화면이 아니라 점수를 비우는것
+        table.innerHTML = '';
         reset();
     } else {
-        // empty 배열을 이렇게 넣는것인가?
+        // empty 배열을 이렇게 넣는것인가? 맞음
         var randomBox = empty[Math.floor(Math.random() * empty.length)];
-        // data를 표현할떄 이중배열이 맞는것인가?
+        // data를 표현할떄 이중배열이 맞는것인가? 맞음
         data[randomBox[0]][randomBox[1]].textContent = 2;
         drawing();
     }
 }
 
 function drawing() {
-    [1,2,3,4].forEach((wData, i) => {
-        [1,2,3,4].forEach((hData, j) => {
+    // 이 부분이 에러인데 테이블이 꽉차게 숫자가 들어가있다. -> 해결안은 forEach문을 돌릴때 [1,2,3,4].forEach로 돌려서 숫자가 다 들어갔다
+    data.forEach((wData, i) => {
+        wData.forEach((hData, j) => {
             // 행데이터가 0이 아니라면 그 부분에 숫자를 넣어준다.
+            console.log(hData); // hData가 0으로 뜬다....
             if(hData > 0) {
-                // table의 표현이 맞는지 아니면 data로 표현을 하는게 맞는건지?
+                // table의 표현이 맞는지 아니면 data로 표현을 하는게 맞는건지? 맞음
                 table.children[i].children[j].textContent = hData;
             }
             else {
-                table.children[i].children[j].textContent = ' ';
+                table.children[i].children[j].textContent = '';
             }
         })
     })
@@ -92,7 +94,7 @@ window.addEventListener('mouseup', (e) => {
         way = 'up';
         console.log('위쪽');
     }
-    else if(diffX < 0 && Math.abs(diffX) / Math.abs(diffY) < 1) {
+    else if(diffX > 0 && Math.abs(diffX) / Math.abs(diffY) < 1) {
         way = 'down';
         console.log('아래쪽');
     }
@@ -109,10 +111,10 @@ window.addEventListener('mouseup', (e) => {
             data.forEach((wData, i) => {
                 wData.forEach((hData, j) => {
                     if(hData) {
-                        if(newData[i][newData.length - 1] && newData[i][newData.length - 1] === hData) {
-                            newData[i][newData.length - 1] *= 2;
+                        if(newData[i][newData[i].length - 1] && newData[i][newData[i].length - 1] === hData) {
+                            newData[i][newData[i].length - 1] *= 2;
                             var point = parseInt(socre.textContent, 10);
-                            score.textContent = point + newData[i][newData.length - 1];
+                            score.textContent = point + newData[i][newData[i].length - 1];
                         }
                         else {
                             newData[i].push(hData);
@@ -120,7 +122,7 @@ window.addEventListener('mouseup', (e) => {
                     }
                 })
             });
-
+            console.log(newData);
             [1,2,3,4].forEach((wData,i) => {
                 [1,2,3,4].forEach((hData, j) => {
                     data[i][j] = newData[i][j] || '';
@@ -148,7 +150,7 @@ window.addEventListener('mouseup', (e) => {
                     }
                 })
             });
-
+            console.log(newData);
             [1,2,3,4].forEach((wData,i) => {
                 [1,2,3,4].forEach((hData, j) => {
                     data[3-i][j] = newData[i][j] || '';
@@ -165,10 +167,10 @@ window.addEventListener('mouseup', (e) => {
             data.forEach((wData, i) => {
                 wData.forEach((hData, j) => {
                     if(hData) {
-                        if(newData[j][newData.length - 1] && newData[j][newData.length - 1] === hData) {
-                            newData[j][newData.length - 1] *= 2;
+                        if(newData[j][newData[j].length - 1] && newData[j][newData[j].length - 1] === hData) {
+                            newData[j][newData[j].length - 1] *= 2;
                             var point = parseInt(socre.textContent, 10);
-                            score.textContent = point + newData[j][newData.length - 1];
+                            score.textContent = point + newData[j][newData[j].length - 1];
                         }
                         else {
                             newData[j].push(wData);
@@ -176,7 +178,7 @@ window.addEventListener('mouseup', (e) => {
                     }
                 })
             });
-
+            console.log(newData);
             [1,2,3,4].forEach((wData,i) => {
                 [1,2,3,4].forEach((hData, j) => {
                     data[j][i] = newData[i][j] || '';
@@ -204,14 +206,16 @@ window.addEventListener('mouseup', (e) => {
                     }
                 })
             });
-
+            console.log(newData);
             [1,2,3,4].forEach((wData,i) => {
                 [1,2,3,4].forEach((hData, j) => {
-                    data[j - 3][i] = newData[i][j] || '';
+                    data[3 - j][i] = newData[i][j] || '';
                 })
             })
             break;
     }
+    drawing();
+    randomDrawing();
 })
 
 
