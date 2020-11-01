@@ -40,10 +40,12 @@ function randomDrawing() {
         // empty 배열을 이렇게 넣는것인가? 맞음
         var randomBox = empty[Math.floor(Math.random() * empty.length)];
         // data를 표현할떄 이중배열이 맞는것인가? 맞음
-        data[randomBox[0]][randomBox[1]].textContent = 2;
+        data[randomBox[0]][randomBox[1]] = 2;
+        // textContent를 써서 숫자 랜덤 생성이 안됬었다. 데이터와 화면 일치 문제인거같음
         drawing();
     }
 }
+
 
 function drawing() {
     // 이 부분이 에러인데 테이블이 꽉차게 숫자가 들어가있다. -> 해결안은 forEach문을 돌릴때 [1,2,3,4].forEach로 돌려서 숫자가 다 들어갔다
