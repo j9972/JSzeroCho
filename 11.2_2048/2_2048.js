@@ -104,7 +104,7 @@ window.addEventListener('mouseup', (e) => {
     dragging = false;
     switch(way) {
         case 'left':
-            newData = [
+            var newData = [
                 [],
                 [],
                 [],
@@ -115,7 +115,7 @@ window.addEventListener('mouseup', (e) => {
                     if(hData) {
                         if(newData[i][newData[i].length - 1] && newData[i][newData[i].length - 1] === hData) {
                             newData[i][newData[i].length - 1] *= 2;
-                            var point = parseInt(socre.textContent, 10);
+                            var point = parseInt(score.textContent, 10);
                             score.textContent = point + newData[i][newData[i].length - 1];
                         }
                         else {
@@ -127,12 +127,12 @@ window.addEventListener('mouseup', (e) => {
             console.log(newData);
             [1,2,3,4].forEach((wData,i) => {
                 [1,2,3,4].forEach((hData, j) => {
-                    data[i][j] = newData[i][j] || '';
+                    data[i][j] = newData[i][j] || 0;
                 })
             })
             break;
         case 'right':
-            newData = [
+            var newData = [
                 [],
                 [],
                 [],
@@ -143,7 +143,7 @@ window.addEventListener('mouseup', (e) => {
                     if(hData) {
                         if(newData[i][0] && newData[i][0] === hData) {
                             newData[i][0] *= 2;
-                            var point = parseInt(socre.textContent, 10);
+                            var point = parseInt(score.textContent, 10);
                             score.textContent = point + newData[i][0];
                         }
                         else {
@@ -155,12 +155,12 @@ window.addEventListener('mouseup', (e) => {
             console.log(newData);
             [1,2,3,4].forEach((wData,i) => {
                 [1,2,3,4].forEach((hData, j) => {
-                    data[3-i][j] = newData[i][j] || '';
+                    data[i][3 - j] = newData[i][j] || 0;
                 })
             })
             break;
         case 'up':
-            newData = [
+            var newData = [
                 [],
                 [],
                 [],
@@ -171,11 +171,11 @@ window.addEventListener('mouseup', (e) => {
                     if(hData) {
                         if(newData[j][newData[j].length - 1] && newData[j][newData[j].length - 1] === hData) {
                             newData[j][newData[j].length - 1] *= 2;
-                            var point = parseInt(socre.textContent, 10);
+                            var point = parseInt(score.textContent, 10);
                             score.textContent = point + newData[j][newData[j].length - 1];
                         }
                         else {
-                            newData[j].push(wData);
+                            newData[j].push(hData);
                         }
                     }
                 })
@@ -183,12 +183,12 @@ window.addEventListener('mouseup', (e) => {
             console.log(newData);
             [1,2,3,4].forEach((wData,i) => {
                 [1,2,3,4].forEach((hData, j) => {
-                    data[j][i] = newData[i][j] || '';
+                    data[j][i] = newData[i][j] || 0;
                 })
             })
-            break
+            break;
         case 'down':
-            newData = [
+            var newData = [
                 [],
                 [],
                 [],
@@ -199,11 +199,11 @@ window.addEventListener('mouseup', (e) => {
                     if(hData) {
                         if(newData[j][0] && newData[j][0] === hData) {
                             newData[j][0] *= 2;
-                            var point = parseInt(socre.textContent, 10);
+                            var point = parseInt(score.textContent, 10);
                             score.textContent = point + newData[j][0];
                         }
                         else {
-                            newData[j].unshift(wData);
+                            newData[j].unshift(hData);
                         }
                     }
                 })
@@ -211,7 +211,7 @@ window.addEventListener('mouseup', (e) => {
             console.log(newData);
             [1,2,3,4].forEach((wData,i) => {
                 [1,2,3,4].forEach((hData, j) => {
-                    data[3 - j][i] = newData[i][j] || '';
+                    data[3 - j][i] = newData[i][j] || 0;
                 })
             })
             break;
