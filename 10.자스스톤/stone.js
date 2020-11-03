@@ -79,7 +79,8 @@ var 상대 = {
         var 인덱스 = 적군.필드data.indexOf(데이터);
         if (인덱스 > -1 ) { // 쫄병이 죽었을 때
           적군.필드data.splice(인덱스, 1);
-        } else { // 영웅이 죽었을 때
+        } 
+        else { // 영웅이 죽었을 때
           alert('승리하셨습니다!');
           초기세팅();
         }
@@ -90,7 +91,8 @@ var 상대 = {
       아군.선택카드 = null;
       아군.선택카드data = null;
       return;
-    } else if (적군카드) { // 상대 카드면
+    } 
+    else if (적군카드) { // 상대 카드면
       return;
     }
     if (데이터.field) { // 카드가 필드에 있으면
