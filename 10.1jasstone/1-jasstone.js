@@ -1,4 +1,4 @@
-var partner = {
+const partner = {
     hero: document.querySelector('#rival-hero'),
     deck: document.querySelector('#rival-deck'),
     field: document.querySelector('#rival-cards'),
@@ -10,7 +10,7 @@ var partner = {
     clickedData: null,
   };
   
-var me = {
+const me = {
     hero: document.querySelector('#my-hero'),
     deck: document.querySelector('#my-deck'),
     field: document.querySelector('#my-cards'),
@@ -23,20 +23,20 @@ var me = {
 };
 // turn의 디폴트값이 false 인지 true인지 모르겠음
 // -> true면 내턴, false면 상대턴
-var turn = true;
-var turnBtn = document.querySelector('#turn-btn');
+let turn = true;
+const turnBtn = document.querySelector('#turn-btn');
 
 // 문제점 29. 인자를 두지 않음
 function fromDeckToField(data, myTurn) {
     // obj를 인자로 둬야하나? 아니
-    var obj = myTurn? me : partner;
+    let obj = myTurn? me : partner;
     // this 부분이 뭔지 모르겠음 -> obj
-    var currentCostScore = Number(obj.cost.textContent);
+    let currentCostScore = Number(obj.cost.textContent);
     if(currentCostScore < data.cost) {
         return 'end';
     }
     // INFO 부분에 뭐가 들어가야하나? -> obj.deckData가 필요함
-    var idx = obj.deckData.indexOf(data);
+    let idx = obj.deckData.indexOf(data);
     // 문제점 30. obj로 연결시켜줘야함
     obj.deckData.splice(idx, 1);
     obj.fieldData.push(data);
@@ -70,7 +70,7 @@ function makingHeroAgain(obj) {
 
 // 문제점 28. 이 함수 자체를 빼먹음
 function makeScreenAgain(myScreen) {
-    var obj = myScreen ? me : partner; // 조건 ? 참 : 거짓;
+    let obj = myScreen ? me : partner; // 조건 ? 참 : 거짓;
     fieldDrawing(obj);
     deckDrawing(obj);
     makingHeroAgain(obj);
@@ -79,22 +79,22 @@ function makeScreenAgain(myScreen) {
 // 문제점 18. 함수 인자를 뭐를 넣어야 할지 몰랐음 -> 이 또한 외울것이 아닌데.....
 function turnAction(card,data,myTurn) {
     // 내턴 어떻게 표현?
-    var ourTeam = myTurn ? me : partner;
-    var partnerTeam = myTurn ? partner : me;
+    let ourTeam = myTurn ? me : partner;
+    let partnerTeam = myTurn ? partner : me;
     // Parameters여기 뭐로 표현? -> card
     // 문제점 19. 인자 표시를 안하니까 뭘 넣어야 하는지 모름
     if(card.classList.contains('card-turnover')) {
         return;
     }
     // 여기 써있는 data는 인자로 있어야 할거같음 -> 맞음
-    var partnerCard = myTurn? !data.mine : data.mine;
+    let partnerCard = myTurn? !data.mine : data.mine;
     // 문제점 20. 아군의 선택카드는 그냥 간단하게 표시하면 됨.
     if(partnerCard && ourTeam.clicked) {
         data.hp = data.hp - ourTeam.clickedData.att;
         if(data.hp <= 0) {
             // INFO 부분에 뭐가 들어가야하나? 적군의 필드 데이터
             // 문제점 21. 내가 지금 무슨 카드를 고르는건지 뭔 코딩을 하는건지 몰라하는거같음 -> 게임에 대한 이해도 향상 필요
-            var idx = partnerTeam.fieldData.indexOf(data);
+            let idx = partnerTeam.fieldData.indexOf(data);
             // 문제점 22. indexOf는 -1 이하는 에러라는걸 잘못이해함
             if( idx > -1) { // 쫄병죽음
                 // Parameters여기 뭐로 표현? 적군 
@@ -142,7 +142,7 @@ function turnAction(card,data,myTurn) {
 // 문제점 9. 인자를 알지 못함, 외울게 아닌데 외우려고 했던 거 같음
 function cardDom(data ,dom, hero) {
     // 문제점 10. 복사해서 넣을 변수를 만들지 않고 함.
-    var card = document.querySelector('.card-hidden .card').cloneNode(true);
+    const card = document.querySelector('.card-hidden .card').cloneNode(true);
 
     // 문제점 11. 복사해서 정보를 넣은 변수가 없어서 선언을 잘못함., textContent를 안쓰면 정보 어케 나타내냐 ㅡㅡ
     card.querySelector('.card-cost').textContent = data.cost;
@@ -154,7 +154,7 @@ function cardDom(data ,dom, hero) {
         // 문제점 12. css 사용을 이상하게함. 그리고 none은 ' ' 이걸로 묶어줘야함
         card.querySelector('.card-cost').style.display = 'none';
         // 얘를 appendChild로 묶어줘야하는거 같은데 뭐로 묶는지 모르겠음
-        var name = document.createElement('div');
+        const name = document.createElement('div');
         name.textContent = 'hero';
         // 문제점 13. 카드 변수를 설정을 안했어서 어떻게 appendChild매소드를 써야할지 몰랐다
         card.appendChild(name);
@@ -251,7 +251,7 @@ turnBtn.addEventListener('click', () => {
     //  -> 변수 선언으로 하고 함수 호출을 할때 인자로 사용 하기
     // 내턴을 어떻게 표현
     //  -> 맨위에 class호출할때 사용한 변수 사용
-    var obj = turn? me : partner;
+    let obj = turn? me : partner;
 
     // toggle 안에 뭘 써야 하나? -> turn을 뒤집어 줘야한다.
     document.querySelector('#rival').classList.toggle('turn');
