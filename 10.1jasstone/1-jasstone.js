@@ -1,5 +1,3 @@
-// 에러 처음에 영웅카드 안뜸 , 내 공격력보다 높은 상대 hp가 높았을때 공격을 했을때 에러 메세지 쓰기
-
 var partner = {
     hero: document.querySelector('#rival-hero'),
     deck: document.querySelector('#rival-deck'),
@@ -127,7 +125,7 @@ function turnAction(card,data,myTurn) {
     if(data.field) {
         document.querySelectorAll('.card').forEach((card) => {
             card.classList.remove('card-selected')
-        })
+        });
         // 문제점 25. 인자에 card 가 있었다는걸 알았으면 했을텐데, 인자를 몰랐던 것
         card.classList.add('card-selected');
         ourTeam.clicked = card;
@@ -175,7 +173,7 @@ function partnerDeckMaking(num) {
     for(let i = 0; i < num; i++) {
         // 체크 2. 이대로 실행이되면 false는 디폴트 값이다
         // 맞음.
-        partner.deckData.push(cardFactory(false, false));
+        partner.deckData.push(cardFactory());
     }
     deckDrawing(partner);
 }
@@ -197,12 +195,12 @@ function makingPartnerHero() {
     partner.heroData = cardFactory(true, false);
     // 여기 카드돔 인자들은 이따가
     // 문제점 5. 인자를 안씀
-    cardDom();
+    cardDom(partner.heroData, partner.hero, true);
 }
 // 카드돔 인자쓰기
 function makingMyHero() {
     me.heroData = cardFactory(true, true);
-    cardDom();
+    cardDom(me.heroData, me.hero, true);
 }
 
 function Card(hero, Mycard) {
