@@ -42,8 +42,8 @@ function fromDeckToField() {
     var idx = INFO.indexOf(data);
     deckData.splice(idx, 1);
     fieldData.push(data);
-    필드다시그리기();
-    덱다시그리기();
+    fieldDrawing();
+    deckDrawing();
     data.field = true;
     obj.cost.textContent = currentCostScore - data.cost;
 }
@@ -75,7 +75,7 @@ function turnAction() {
             }
         }
         else {
-            화면다시그리기();
+            deckDrawing();
             // Parameters여기 뭐로 표현?
             Parameters.remove('card-selected');
             Parameters.add('card-turnover')
@@ -95,7 +95,7 @@ function turnAction() {
         ourTeam.clicked = card;
         ourTeam.clickedData = data;
     }else {
-        if(덱에서필드로(me, partner) !== 'end') {
+        if(fromDeckToField(me, partner) !== 'end') {
             내턴 ? meDeckMaking(1) : partnerDeckMaking(1)
         }
     }
@@ -139,14 +139,14 @@ function deckDrawing(obj) {
 function partnerDeckMaking(num) {
     for(let i = 0; i < num.length; i++) {
         partner.deckData.push(cardFactory(true, false));
-        덱다시그리기();
+        deckDrawing();
     }
 }
 
-function partnerDeckMaking(num) {
+function myDeckMaking(num) {
     for(let i = 0; i < num.length; i++) {
         partner.deckData.push(cardFactory(true, true));
-        덱다시그리기();
+        deckDrawing();
     }
 }
 
@@ -189,12 +189,12 @@ function setting() {
         item.clicked = null,
         item.clickedData = null
     });
-    상대덱생성(5);
-    내덱생성(5);
-    상대영웅생성();
-    내영웅생성();
-    화면그리기(상대);
-    화면그리기(나);
+    partnerDeckMaking(5);
+    myDeckMaking(5);
+    makingPartnerHero();
+    makingMyHero();
+    partnerDeckMaking(상대);
+    myDeckMaking(나);
 }
 // 내턴을 어떻게 표현했더라
 turnBtn.addEventListener('click', (obj) => {
@@ -205,8 +205,8 @@ turnBtn.addEventListener('click', (obj) => {
     document.querySelector('#rival').classList.toggle('turn');
     document.querySelector('#my').classList.toggle('turn');
 
-    필드다시그리기();
-    영웅다시그리기();
+    fieldDrawing();
+    makingHeroAgain();
 
     turn = !turn;
     // 조건문에 내턴임을 알려야 함
