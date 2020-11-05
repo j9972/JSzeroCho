@@ -1,3 +1,5 @@
+// 에러 처음에 영웅카드 안뜸 , 내 공격력보다 높은 상대 hp가 높았을때 공격을 했을때 에러 메세지 쓰기
+
 var partner = {
     hero: document.querySelector('#rival-hero'),
     deck: document.querySelector('#rival-deck'),
@@ -46,20 +48,6 @@ function fromDeckToField(data, myTurn) {
     obj.cost.textContent = currentCostScore - data.cost;
 }
 
-// 문제점 28. 이 함수 자체를 빼먹음
-function makeScreenAgain(myScreen) {
-    var obj = myScreen ? me : partner; // 조건 ? 참 : 거짓;
-    fieldDrawing(obj);
-    deckDrawing(obj);
-    makingHeroAgain(obj);
-  }
-
-function makingHeroAgain(obj) {
-    // 문제점 27. 인자를 제대로 안쓰고 카드돔 함수의 인자를 안씀
-    obj.hero.innerHTML = '';
-    cardDom(obj.heroData, obj.hero, true);
-}
-
 function fieldDrawing(obj) {
     obj.field.innerHTML = '';
     obj.fieldData.forEach((data) => {
@@ -72,9 +60,23 @@ function deckDrawing(obj) {
     obj.deck.innerHTML = '';
     obj.deckData.forEach((data) => {
         // 문제점 17 forEach문 인자를 안넣음
-        cardDom(data,obj.deck);
+        cardDom(data, obj.deck);
     })
 }
+
+function makingHeroAgain(obj) {
+    // 문제점 27. 인자를 제대로 안쓰고 카드돔 함수의 인자를 안씀
+    obj.hero.innerHTML = '';
+    cardDom(obj.heroData, obj.hero, true);
+}
+
+// 문제점 28. 이 함수 자체를 빼먹음
+function makeScreenAgain(myScreen) {
+    var obj = myScreen ? me : partner; // 조건 ? 참 : 거짓;
+    fieldDrawing(obj);
+    deckDrawing(obj);
+    makingHeroAgain(obj);
+  }
 
 // 문제점 18. 함수 인자를 뭐를 넣어야 할지 몰랐음 -> 이 또한 외울것이 아닌데.....
 function turnAction(card,data,myTurn) {
@@ -90,7 +92,7 @@ function turnAction(card,data,myTurn) {
     var partnerCard = myTurn? !data.mine : data.mine;
     // 문제점 20. 아군의 선택카드는 그냥 간단하게 표시하면 됨.
     if(partnerCard && ourTeam.clicked) {
-        data.hp -= ourTeam.clicked.att;
+        data.hp = data.hp - ourTeam.clickedData.att;
         if(data.hp <= 0) {
             // INFO 부분에 뭐가 들어가야하나? 적군의 필드 데이터
             // 문제점 21. 내가 지금 무슨 카드를 고르는건지 뭔 코딩을 하는건지 몰라하는거같음 -> 게임에 대한 이해도 향상 필요
@@ -107,16 +109,16 @@ function turnAction(card,data,myTurn) {
                 setting();
             }
         }
-        else {
-            // 문제점 24. 인자를 쓰지 않음
-            makeScreenAgain(!myTurn);
-            // Parameters여기 뭐로 표현? 아군이 선택한 카드
-            // 문제점 24. 내가 지금 무슨 코딩을 하는지 몰라함.
-            ourTeam.clicked.remove('card-selected');
-            ourTeam.clicked.add('card-turnover')
-            ourTeam.clicked = null;
-            ourTeam.clickedData = null;
-        }
+        // 문제점 24. 인자를 쓰지 않음
+        makeScreenAgain(!myTurn);
+        // Parameters여기 뭐로 표현? 아군이 선택한 카드
+        // 문제점 24. 내가 지금 무슨 코딩을 하는지 몰라함.
+        ourTeam.clicked.classList.remove('card-selected');
+        ourTeam.clicked.classList.add('card-turnover');
+        ourTeam.clicked = null;
+        ourTeam.clickedData = null;
+        // 문제점 32. 종료를 시키지 않았음
+        return;
     }
     else if(partnerCard) {
         return;
@@ -233,8 +235,9 @@ function setting() {
         item.deckData = [],
         item.heroData = [],
         item.fieldData = [],
-        item.clicked = null,
-        item.clickedData = null
+        // 문제점 31. 선택한 카드들을 null 이 아닌 빈 배열로 만들어줘야한다.
+        item.clicked = [],
+        item.clickedData = [];
     });
     partnerDeckMaking(5);
     myDeckMaking(5);
