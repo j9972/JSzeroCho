@@ -48,6 +48,12 @@ function fromDeckToField() {
     obj.cost.textContent = currentCostScore - data.cost;
 }
 
+function makeScreenAgain(myScreen) {
+    var obj = myScreen ? me : partner; // 조건 ? 참 : 거짓;
+    fieldDrawing(객체);
+    deckDrawing(객체);
+    makingHeroAgain(객체);
+  }
 
 function turnAction() {
     // 내턴 어떻게 표현?
@@ -75,7 +81,7 @@ function turnAction() {
             }
         }
         else {
-            deckDrawing();
+            makeScreenAgain();
             // Parameters여기 뭐로 표현?
             Parameters.remove('card-selected');
             Parameters.add('card-turnover')
@@ -193,8 +199,8 @@ function setting() {
     myDeckMaking(5);
     makingPartnerHero();
     makingMyHero();
-    partnerDeckMaking(상대);
-    myDeckMaking(나);
+    makeScreenAgain(상대);
+    makeScreenAgain(나);
 }
 // 내턴을 어떻게 표현했더라
 turnBtn.addEventListener('click', (obj) => {
