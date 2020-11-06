@@ -206,8 +206,11 @@ const colors = ['red', 'orange', 'yellow', 'green', 'blue', 'navy', 'violet'];
 
 // const 변수 이름 = 값 -> 상수로써 항상 같다 ( 변하지 않는 값 -> 수정할 수 없는 변수, const -> 블록 스코프)
 // let 변수 이름 = 값 -> 변하는 값을 말하는 것. ( var과 다르게 scope가 다름 let -> 블록 스코프, var -> 블록스코프  )
+
+// 질문 1. 찾아볼 것 value가 의미하는것은 무엇인가
 const isActiveBlock = value => (value > 0 && value < 10);
 const isInvalidBlock = value => (value === undefined || value >= 10);
+
 // isActiveBlock 움직이는 칸, isInvalidBlock 움직일수 없는 칸
 // const 함수명 = () => {} 랑 function 함수명() {} 이 같다. / this 가 다르기 때문에 둘다 쓰인다.
 // const 함수명 = () => { return } 을 'cosnt 함수명 = () => 리턴값'으로 줄일수있다
@@ -222,7 +225,8 @@ const isInvalidBlock = value => (value === undefined || value >= 10);
       arr.push(i); 와 같은 문법 
 */    
 
-    // ex) ...[1,2,3] -> 1,2,3 ( 배열에 ...을 붙이면 요소들이 빠져나온다 ) -> func(...[1,2,3]) -> func(1,2,3)
+// ex) ...[1,2,3] -> 1,2,3 ( 배열에 ...을 붙이면 요소들이 빠져나온다 ) -> func(...[1,2,3]) -> func(1,2,3)
+// 질문2
 function init() {
   const fragment = document.createDocumentFragment();
   [...Array(20).keys()].forEach((col, i) => {
@@ -232,17 +236,21 @@ function init() {
       const td = document.createElement('td');
       tr.appendChild(td);
     });
+    //2. 여기서 column은 무엇을 나타내며, fill(0)은 어떤 코드인가
     const column = Array(10).fill(0);
     tetrisData.push(column);
   });
   tetris.appendChild(fragment);
 }
 
+// 질문 3,4
 function draw() {
+  // 질문 3. JSON.parse가 찾고자하는것은 무엇인가?
   console.log('drawed', JSON.parse(JSON.stringify(tetrisData)), JSON.parse(JSON.stringify(currentBlock)));
   tetrisData.forEach((col, i) => {
     col.forEach((row, j) => {
       if (row > 0) {
+        // 질문 4. 색을 넣는 코드인거 같은데  row가 0보다 클때가 의미하는바는?
         tetris.children[i].children[j].className = tetrisData[i][j] >= 10 ? colors[tetrisData[i][j] / 10 - 1]: colors[tetrisData[i][j] - 1];
       } else {
         tetris.children[i].children[j].className = '';
@@ -251,12 +259,14 @@ function draw() {
   });
 }
 
-
+// 질문 5, 6
 function drawNext() { // 다음 블록 그리는 함수
   const nextTable = document.getElementById('next-table');
   nextTable.querySelectorAll('tr').forEach((col, i) => {
     Array.from(col.children).forEach((row, j) => {
+      // 질문 5. if문의 조건이 뭐를 의미하는지 모르겠음
       if (nextBlock.shape[0][i] && nextBlock.shape[0][i][j] > 0) {
+        // 질문 6. 조건을 만족할때 색을 넣는거같은데 어떤 생각으로 넣는것인가?
         nextTable.querySelectorAll('tr')[i].children[j].className = colors[nextBlock.numCode - 1];
       } else {
         nextTable.querySelectorAll('tr')[i].children[j].className = 'white';
@@ -265,6 +275,7 @@ function drawNext() { // 다음 블록 그리는 함수
   })
 }
 
+// 질문 7,8 -> 이 함수에 대한 이해가 잘안됨.
 function generate() { // 테트리스 블록 생성
   if (!currentBlock) {
     currentBlock = blocks[Math.floor(Math.random() * blocks.length)]; // 랜덤하게 블록을 뽑는중
@@ -277,9 +288,11 @@ function generate() { // 테트리스 블록 생성
   drawNext();
   currentTopLeft = [-1, 3]; // 가상의 칸을 하나 더 만듬 -> 우리가 블룩을 한칸아래에서 만들어지겠끔 해놔서
   let isGameOver = false;
+  // 질문 7. shape[0].slice(1) 이 의미하는 바?
   currentBlock.shape[0].slice(1).forEach((col, i) => { // 게임 오버 판단 
     col.forEach((row, j) => {
-      if (row && tetrisData[i][j + 3]) {
+      // 질문 8.tetrisData[i][j + 3] 뭘 의미하나?
+      if (row && tetrisData[i][j + 3]) { // 게임이 끝나는 경우
         isGameOver = true;
       }
     });
@@ -302,8 +315,10 @@ function generate() { // 테트리스 블록 생성
   }
 }
 
+//질문 9 // 블럭 지우기
 function checkRows() { // 한 줄 다 찼는지 검사
   const fullRows = [];
+  // 칸을 터트리기전 확인
   tetrisData.forEach((col, i) => {
     let count = 0;
     col.forEach((row, j) => {
@@ -316,7 +331,9 @@ function checkRows() { // 한 줄 다 찼는지 검사
     }
   });
   const fullRowsCount = fullRows.length;
+  // 질문9. filter함수로 인하여 얻는것 
   tetrisData = tetrisData.filter((row, i) => !fullRows.includes(i));
+  // 얘는 10개가 채워지면 빈 행을 만들어 주는것
   for (let i = 0; i < fullRowsCount; i++) {
     tetrisData.unshift([0,0,0,0,0,0,0,0,0,0]);
   }
@@ -326,7 +343,9 @@ function checkRows() { // 한 줄 다 찼는지 검사
   document.getElementById('score').textContent = String(score);
 }
 
+// 질문 10,11
 function tick() { // 한 칸 아래로
+  // 질문 10. nextTopLeft 이 부분 이해가 안감
   const nextTopLeft = [currentTopLeft[0] + 1, currentTopLeft[1]];
   const activeBlocks = [];
   let canGoDown = true;
@@ -346,6 +365,7 @@ function tick() { // 한 칸 아래로
   }
   if (!canGoDown) {
     activeBlocks.forEach((blocks) => {
+      // 질문 11. 이부분이 이해가 안감
       tetrisData[blocks[0]][blocks[1]] *= 10;
     });
     checkRows(); // 지워질 줄 있나 확인
@@ -381,7 +401,10 @@ document.getElementById('start').addEventListener('click', function() {
   }
   int = setInterval(tick, 2000);
 });
+
+// 질문 12
 document.getElementById('mute').addEventListener('click', function() {
+  // 질문12. paused와 play, pause 매소드에 대한 정리 필요
   if (document.getElementById('bgm').paused) {
     document.getElementById('bgm').play();
   } else {
@@ -389,6 +412,7 @@ document.getElementById('mute').addEventListener('click', function() {
   }
 });
 
+// 질문 13. 이건 다시 보기
 window.addEventListener('keydown', (e) => {
   switch (e.code) {
     case 'ArrowLeft': { // 키보드 왼쪽 클릭 = 좌측 한 칸 이동
@@ -458,6 +482,7 @@ window.addEventListener('keydown', (e) => {
   }
 });
 
+// 질문 14. 다시 보기
 window.addEventListener('keyup', (e) => {
   switch (e.code) {
     case 'ArrowUp': { // 방향 전환
