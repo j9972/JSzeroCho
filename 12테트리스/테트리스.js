@@ -13,7 +13,7 @@ var blocks = [
     shape: [
       [
         [0, 0, 0],
-        [0, 1, 1],
+        [0, 1, 1], // 1 부분이 도형의 모양
         [0, 1, 1],
       ]
     ],
@@ -207,7 +207,8 @@ const colors = ['red', 'orange', 'yellow', 'green', 'blue', 'navy', 'violet'];
 // const 변수 이름 = 값 -> 상수로써 항상 같다 ( 변하지 않는 값 -> 수정할 수 없는 변수, const -> 블록 스코프)
 // let 변수 이름 = 값 -> 변하는 값을 말하는 것. ( var과 다르게 scope가 다름 let -> 블록 스코프, var -> 블록스코프  )
 
-// 질문 1. 찾아볼 것 value가 의미하는것은 무엇인가
+// 질문 1. 찾아볼 것 value가 의미하는것은 무엇인가 -> 그냥 인자를 의미
+// (value > 0 && value < 10) 이거는 리턴값
 const isActiveBlock = value => (value > 0 && value < 10);
 const isInvalidBlock = value => (value === undefined || value >= 10);
 
@@ -236,7 +237,7 @@ function init() {
       const td = document.createElement('td');
       tr.appendChild(td);
     });
-    //2. 여기서 column은 무엇을 나타내며, fill(0)은 어떤 코드인가
+    //2. 여기서 column은 무엇을 나타내며, fill(0)은 어떤 코드인가 -> 빈테이블을 만드는 코드인거 같음 / 가로 10칸
     const column = Array(10).fill(0);
     tetrisData.push(column);
   });
@@ -285,10 +286,10 @@ function generate() { // 테트리스 블록 생성
   currentBlock.currentShapeIndex = 0;
   nextBlock = blocks[Math.floor(Math.random() * blocks.length)]; // 다음 블록 미리 생성
   console.log(currentBlock);
-  drawNext();
+  drawNext(); // next-table 이라고 다음 블록을 작은 테이블에 그려줌
   currentTopLeft = [-1, 3]; // 가상의 칸을 하나 더 만듬 -> 우리가 블룩을 한칸아래에서 만들어지겠끔 해놔서
   let isGameOver = false;
-  // 질문 7. shape[0].slice(1) 이 의미하는 바?
+  // 질문 7. shape[0].slice(1) 이 의미하는 바? -> slice(1) 을 해서 3x3 을 2x3으로 만들어줌
   currentBlock.shape[0].slice(1).forEach((col, i) => { // 게임 오버 판단 
     col.forEach((row, j) => {
       // 질문 8.tetrisData[i][j + 3] 뭘 의미하나?
@@ -345,7 +346,7 @@ function checkRows() { // 한 줄 다 찼는지 검사
 
 // 질문 10,11
 function tick() { // 한 칸 아래로
-  // 질문 10. nextTopLeft 이 부분 이해가 안감
+  // 질문 10. nextTopLeft 이 부분 이해가 안감 -> 가상의 칸 만든거에 한칸 아래
   const nextTopLeft = [currentTopLeft[0] + 1, currentTopLeft[1]];
   const activeBlocks = [];
   let canGoDown = true;
