@@ -246,7 +246,7 @@ function init() {
 
 // 질문 3,4
 function draw() {
-  // 질문 3. JSON.parse가 찾고자하는것은 무엇인가?
+  // 질문 3. JSON.parse가 찾고자하는것은 무엇인가? JSON 형식으로 쓰인 string을 js 객체로 반환하는거, 테트리스 데이터 & 현재 블럭을 보여달라는 의미
   console.log('drawed', JSON.parse(JSON.stringify(tetrisData)), JSON.parse(JSON.stringify(currentBlock)));
   tetrisData.forEach((col, i) => {
     col.forEach((row, j) => {
@@ -267,7 +267,8 @@ function drawNext() { // 다음 블록 그리는 함수
     Array.from(col.children).forEach((row, j) => {
       // 질문 5. if문의 조건이 뭐를 의미하는지 모르겠음
       if (nextBlock.shape[0][i] && nextBlock.shape[0][i][j] > 0) {
-        // 질문 6. 조건을 만족할때 색을 넣는거같은데 어떤 생각으로 넣는것인가?
+        // 질문 6. 조건을 만족할때 색을 넣는거같은데 어떤 생각으로 넣는것인가? 
+        //nextBlock.numCode - 1 이유: numCode는 1부터 color는 0부터 idx 시작
         nextTable.querySelectorAll('tr')[i].children[j].className = colors[nextBlock.numCode - 1];
       } else {
         nextTable.querySelectorAll('tr')[i].children[j].className = 'white';
