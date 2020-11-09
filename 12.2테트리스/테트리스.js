@@ -285,6 +285,71 @@ function generate() {
     }
 }
 
+function checkRows() {
+  const fullRows = [];
+  tetrisData.forEach((col,i) => {
+    let count = 0;
+    col.forEach((row,j) => {
+      if(row > 0) {
+        count++;
+      }
+    });
+    if(count == 10) {
+      fullRows.push(i);
+    }
+  });
+  const fullRowsCount = fullRows.length;
+  tetrisData = tetrisData.filter((row,i) => !fullRows.includes(i));
+
+  for(let i = 0; i < fullRowsCount; i++) {
+    tetrisData.unshift([0,0,0,0,0,0,0,0,0,0]);
+  }
+  let score = parseInt(document.querySelector('#score').textContent, 10);
+  score += fullRowsCount ** 2;
+  document.querySelector('#score').textContent = String(score);
+}
+
+function tick() {
+  let canGoDown = true;
+  const nextTopLeft = [currentTopLeft[0] + 1, currentTopLeft[1]];
+  let currentShapeIndex = currentBlock.shaep[currentBlock.currentShapeIndex];
+  const activeBlock = [];
+
+  for(let i = currentTopLeft[0]; i < currentTopLeft[0] + currentShapeIndex.length; i++) {
+    if( i < 0 || i >= 20) continue;
+    for(let j = currentTopLeft[1]; j < currentTopLeft[1] + currentShapeIndex.length; j++) {
+      if(isActiveBlock(tetrisData[i][j])) {
+        activeBlock.push([i,j]);
+        if(isInvalidBlock(tetrisData[i + 1] && tetrisData[i + 1][j])) {
+          canGoDown = false;
+        }
+      }
+    }
+  }
+  if(!canGoDown) {
+    activeBlock.forEach((blocks) => {
+      tetrisData[blocks[0]][blocks[1]] *= 10;
+    });
+    checkRows();
+    generate();
+    return false;
+  }
+  else if (canGoDown) {
+    for(let i = tetrisData.length - 1; i >= 0; i--) {
+      const col = tetrisData[i];
+      col.forEach((row,j) => {
+        if(row < 10 && tetrisData[i + 1] && tetrisData[i + 1][j] < 10) {
+          tetrisData[i + 1][j] = row;
+          tetrisData[i][j] = 0;
+        }
+      });
+    }
+    currentTopLeft = nextTopLeft;
+    draw();
+    return true;
+  }
+}
+
 let int = setInterval(tick, 2000);
 init();
 generate();
