@@ -202,6 +202,7 @@ var blocks = [
 const colors = ['red', 'orange', 'yellow', 'green', 'blue', 'navy', 'violet'];
 
 const activeBlock = value => (value > 0 && value < 10);
+// 오류1. 블럭이 아래에서 고정이 안됨
 const InvalidBlock = value => (value === undefined && value > 10);
 
 function init() {
@@ -444,6 +445,7 @@ window.addEventListener('keydown', (e) => {
   }
 })
 
+// 오류2. : space 버튼을 누르면 무한루프
 window.addEventListener('keyup', (e) => {
   switch (e.code) {
     case 'ArrowUp': { // 방향 전환
