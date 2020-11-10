@@ -310,36 +310,36 @@ function checkRows() {
 }
 
 function tick() {
-  const activeBlock = [];
   const nextTopLeft = [currentTopLeft[0] + 1, currentTopLeft[1]];
+  const activeBlocks = [];
   let canGoDown = true;
-  let currentBlockShape = currentBlock.shaep[currentBlock.currentShapeIndex];
-  
-
-  for(let i = currentTopLeft[0]; i < currentTopLeft[0] + currentBlockShape.length; i++) {
-    if( i < 0 || i >= 20) continue;
-    for(let j = currentTopLeft[1]; j < currentTopLeft[1] + currentBlockShape.length; j++) {
-      if(isActiveBlock(tetrisData[i][j])) {
-        activeBlock.push([i,j]);
-        if(isInvalidBlock(tetrisData[i + 1] && tetrisData[i + 1][j])) {
+  let currentBlockShape = currentBlock.shape[currentBlock.currentShapeIndex];
+  for (let i = currentTopLeft[0]; i < currentTopLeft[0] + currentBlockShape.length; i++) { // 아래 블럭이 있으면
+    if (i < 0 || i >= 20) continue;
+    for (let j = currentTopLeft[1]; j < currentTopLeft[1] + currentBlockShape.length; j++) {
+      console.log(i, j);
+      if (activeBlock(tetrisData[i][j])) { // 현재 움직이는 블럭이면
+        activeBlocks.push([i, j]);
+        if (InvalidBlock(tetrisData[i + 1] && tetrisData[i + 1][j])) {
+          console.log('아래 블럭이 있다!', i, j, tetrisData[i][j], tetrisData[i + 1] && tetrisData[i + 1][j], JSON.parse(JSON.stringify(tetrisData)));
           canGoDown = false;
         }
       }
     }
   }
-  if(!canGoDown) {
-    activeBlock.forEach((blocks) => {
+  if (!canGoDown) {
+    activeBlocks.forEach((blocks) => {
+      // 질문 11. 이부분이 이해가 안감
       tetrisData[blocks[0]][blocks[1]] *= 10;
     });
-    checkRows();
-    generate();
+    checkRows(); // 지워질 줄 있나 확인
+    generate(); // 새 블록 생성
     return false;
-  }
-  else if (canGoDown) {
-    for(let i = tetrisData.length - 1; i >= 0; i--) {
+  } else if (canGoDown) {
+    for (let i = tetrisData.length - 1; i >= 0; i--) {
       const col = tetrisData[i];
-      col.forEach((row,j) => {
-        if(row < 10 && tetrisData[i + 1] && tetrisData[i + 1][j] < 10) {
+      col.forEach((row, j) => {
+        if (row < 10 && tetrisData[i + 1] && tetrisData[i + 1][j] < 10) {
           tetrisData[i + 1][j] = row;
           tetrisData[i][j] = 0;
         }
@@ -368,14 +368,14 @@ document.querySelector('#start').addEventListener('click', () => {
   }
 });
 
-document.querySelector('#mute').addEventListener('click', () => {
-  if(document.querySelector('#bgm').paused) {
-    document.querySelector('#bgm').play();
-  }
-  else {
-    document.querySelector('#bgm').pause();
-  }
-})
+// document.querySelector('#mute').addEventListener('click', () => {
+//   if(document.querySelector('#bgm').paused) {
+//     document.querySelector('#bgm').play();
+//   }
+//   else {
+//     document.querySelector('#bgm').pause();
+//   }
+// })
 
 window.addEventListener('keydown', (e) => {
   switch(e.code) {
@@ -387,7 +387,7 @@ window.addEventListener('keydown', (e) => {
         if(!isMovable) break;
         for(let j= currentTopLeft[1]; j < currentTopLeft[1] + currentBlockShape.length; j++) {
           if(!tetrisData[i] || tetrisData[i][j]) continue;
-          if(isActiveBlock(tetrisData[i][j]) && isInvalidBlock(tetrisData[i] && tetrisData[i][j - 1])) {
+          if(activeBlock(tetrisData[i][j]) && InvalidBlock(tetrisData[i] && tetrisData[i][j - 1])) {
             isMovable = false;
           }
         }
@@ -415,7 +415,7 @@ window.addEventListener('keydown', (e) => {
         if(!isMovable) break;
         for(let j= currentTopLeft[1]; j < currentTopLeft[1] + currentBlockShape.length; j++) {
           if(!tetrisData[i] || tetrisData[i][j]) continue;
-          if(isActiveBlock(tetrisData[i][j]) && isInvalidBlock(tetrisData[i] && tetrisData[i][j - 1])) {
+          if(activeBlock(tetrisData[i][j]) && InvalidBlock(tetrisData[i] && tetrisData[i][j - 1])) {
             isMovable = false;
           }
         }
