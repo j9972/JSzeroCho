@@ -421,7 +421,8 @@ window.addEventListener('keydown', (e) => {
         if(!isMovable) break;
         for(let j= currentTopLeft[1]; j < currentTopLeft[1] + currentBlockShape.length; j++) {
           if(!tetrisData[i] || !tetrisData[i][j]) continue;
-          if(activeBlock(tetrisData[i][j]) && InvalidBlock(tetrisData[i] && tetrisData[i][j - 1])) {
+          if(activeBlock(tetrisData[i][j]) && InvalidBlock(tetrisData[i] && tetrisData[i][j + 1])) {
+            console.log(i, j);
             isMovable = false;
           }
         }
