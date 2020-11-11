@@ -199,11 +199,12 @@ var blocks = [
   },
 ];
 
-const colors = ['red', 'orange', 'yellow', 'green', 'blue', 'navy', 'violet'];
+//var 
 
+const colors = ['red', 'orange', 'yellow', 'green', 'blue', 'navy', 'violet'];
+// 오류1. 블럭이 아래에서 고정이 안됨 // 모형 변형
 const activeBlock = value => (value > 0 && value < 10);
-// 오류1. 블럭이 아래에서 고정이 안됨
-const InvalidBlock = value => (value === undefined && value > 10);
+const InvalidBlock = value => (value === undefined || value >= 10);
 
 function init() {
     const fragment = document.createDocumentFragment();
@@ -221,7 +222,6 @@ function init() {
     tetris.appendChild(fragment);
 }
 
-// 문제 1
 function draw() {
     tetrisData.forEach((col,i) => {
         col.forEach((row,j) => {
@@ -229,13 +229,12 @@ function draw() {
                 tetris.children[i].children[j].className = tetrisData[i][j] >= 10 ? colors[tetrisData[i][j] / 10 - 1] : colors[tetrisData[i][j] - 1];
             } 
             else {
-              tetris.children[i].children[j].className = 'white';
+              tetris.children[i].children[j].className = '';
             }
         })
     })
 }
 
-// 문제2. 
 function drawNext() {
     const nextTable = document.querySelector('#next-table');
     nextTable.querySelectorAll('tr').forEach((col, i) => {
@@ -280,12 +279,12 @@ function generate() {
     });
 
     if(isGameOver) {
-        clearInterval(int);
-        draw();
-        alert('종료');
+      clearInterval(int);
+      draw();
+      alert('종료');
     }
     else {
-        draw();
+      draw();
     }
 }
 
@@ -445,7 +444,7 @@ window.addEventListener('keydown', (e) => {
   }
 })
 
-// 오류2. : space 버튼을 누르면 무한루프
+
 window.addEventListener('keyup', (e) => {
   switch (e.code) {
     case 'ArrowUp': { // 방향 전환
