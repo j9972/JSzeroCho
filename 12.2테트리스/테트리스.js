@@ -371,14 +371,14 @@ document.querySelector('#start').addEventListener('click', () => {
   }
 });
 
-document.querySelector('#mute').addEventListener('click', () => {
-  if(document.querySelector('#bgm').paused) {
-    document.querySelector('#bgm').play();
-  }
-  else {
-    document.querySelector('#bgm').pause();
-  }
-})
+// document.querySelector('#mute').addEventListener('click', () => {
+//   if(document.querySelector('#bgm').paused) {
+//     document.querySelector('#bgm').play();
+//   }
+//   else {
+//     document.querySelector('#bgm').pause();
+//   }
+// })
 
 window.addEventListener('keydown', (e) => {
   switch(e.code) {
