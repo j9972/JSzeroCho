@@ -226,9 +226,11 @@ function draw() {
         col.forEach((row,j) => {
             if(row > 0) { // 문제 1. 뒷 부분 어떻게 색을 넣나?
               // tetrisData[i][j] 하나의 빈칸을 의미, 얘는 0~9의 idx를 갖음
-                tetris.children[i].children[j].className = tetrisData[i][j] >= 10 ? colors[tetrisData[i][j] / 10 - 1] : colors[tetrisData[i][j] - 1];
+              tetris.children[i].children[j].className = tetrisData[i][j] >= 10 ? colors[tetrisData[i][j] / 10 - 1] : colors[tetrisData[i][j] - 1];
+              // tetris.children[i].children[j].className = colors[tetrisData[i][j] - 1]; // 쌓였을때 보이지가 않음
+              // tetris.children[i].children[j].className = colors[tetrisData[i][j] / 10 - 1]; // 처음에 보이지 않음
             } 
-            else {
+            else { // 이 부분에 빈칸이 아닌 white를 쓰면 블럭들이 흰색으로 바뀌며 사라진다.
               tetris.children[i].children[j].className = '';
             }
         })
@@ -238,18 +240,24 @@ function draw() {
 function drawNext() { // 작은 테이블을 만들어 다음에 나올 블럭을 생성ㄴ
     const nextTable = document.querySelector('#next-table');
     nextTable.querySelectorAll('tr').forEach((col, i) => {
+        // 그냥 col이 아닌 Array.from(col.childre)를 한것으로 부터 nextTable.querySelectorAll('tr')[i].children[j] 이런식으로 쓰일것을 유추
         Array.from(col.children).forEach((row,j) => {
             if(nextBlock.shape[0][i] && nextBlock.shape[0][i][j] > 0) {
-                nextTable.querySelectorAll('tr')[i].children[j].className = colors[nextBlock.numCode - 1];
+              // nextBlock.shape[0][i] 이 조건은 블럭의 존재 유무를 따진거 + [j]의 의미는 블럭의 모양들 보면 첫번째 행에는 빈칸을 두기 때문인것 같음
+              // nextBlock.shape[0]은 각 block을 첫번째 모형으로 fix한것이다.
+              nextTable.querySelectorAll('tr')[i].children[j].className = colors[nextBlock.numCode - 1];
+              // nextTable.querySelectorAll('tr')[i].children[j] 이 모양은 html 코드가 각 tr(행) 마다로 td가 나눠져서 그런듯
             }
             else {
-                nextTable.querySelectorAll('tr')[i].children[j].className = 'white';
+              nextTable.querySelectorAll('tr')[i].children[j].className = 'white';
             }
         })
     })
 }
 
+// 다시 만들때 추가할 기능 생각했음 
 function generate() {
+    // 현재 블럭이 있고 없고로 따라서 없으면 현재 블럭을 랜덤 생성을 하고 아니면 다음 블럭을 현재의 블럭으로 불러오기
     if(!currentBlock) {
         currentBlock = blocks[Math.floor(Math.random() * blocks.length)];
     }
@@ -257,11 +265,13 @@ function generate() {
         currentBlock = nextBlock;
     }
     currentBlock.currentShapeIndex = 0;
-    nextBlock = blocks[Math.floor(Math.random() * blocks.length)];
-    drawNext();
-    currentTopLeft = [-1,3];
-    let isGameOver = false;
+    nextBlock = blocks[Math.floor(Math.random() * blocks.length)]; // 다음 블럭 생성
+    drawNext(); // 작은 테이블 안에다가 다음에 생길 블럭을 미리 그려서 확인해보기
+    currentTopLeft = [-1,3]; // 블럭의 생성은 원래 맨 위의 행이 아닌 그 다음의 행에 그려지도록 코드를 짜서 시작되는 부분의 위치를  한칸 위로 올림
+    let isGameOver = false; // flag의 역할 false로 시작을 함으로써 처음에 멈추지 않게 만들기
 
+    // slice(1)을 함으로써 2 x 3 블록으로 만들어 준다.
+    // 추가 기능 : 게임을 해보니까 tetrisData[i][j+3] 이 자리에 닿아야 게임 오버  => 이 부분은 한번더 할때 맨 위층 전면에 해당하도록 만들어보기
     currentBlock.shape[0].slice(1).forEach((col,i) => {
         col.forEach((row,j) => {
             if(row && tetrisData[i][j+3]) {
@@ -273,6 +283,7 @@ function generate() {
     currentBlock.shape[0].slice(1).forEach((col,i) => {
         col.forEach((row,j) => {
             if(row) {
+              // 블럭이 만들어지는 위치를 지정해주는코드
                 tetrisData[i][j+3] = currentBlock.numCode;
             }
         });
@@ -280,7 +291,7 @@ function generate() {
 
     if(isGameOver) {
       clearInterval(int);
-      draw();
+      draw(); // 게임이 끝나고 말고를 떠나 다시 블럭을 그려주기
       alert('종료');
     }
     else {
@@ -303,17 +314,23 @@ function checkRows() {
   });
   const fullRowsCount = fullRows.length;
   tetrisData = tetrisData.filter((row,i) => !fullRows.includes(i));
+  // 꽉찬 부분을 지워주는 코드
 
   for(let i = 0; i < fullRowsCount; i++) {
     tetrisData.unshift([0,0,0,0,0,0,0,0,0,0]);
   }
-  let score = parseInt(document.querySelector('#score').textContent, 10);
+  // 이 부분은 꽉찬 블럭은 지워지고 가장 윗부분쪽에 새롭게 행을 만들어 주는 코드
+  
+  let score = parseInt(document.querySelector('#score').textContent);
+  // 점수 변수 지정,  parseInt의 인자는 string이랑 radix인데 이는 의미없는 수 같음
   score += fullRowsCount ** 2;
+  // 점수가 더해지는 원리는 지워지는 행들의 제곱수이다. ex) 3줄이 한번에 지워지면 한번에 9점이 오르는 방법
   document.querySelector('#score').textContent = String(score);
+  // 점수를 밑에 표현해주는것
 }
 
 function tick() {
-  const nextTopLeft = [currentTopLeft[0] + 1, currentTopLeft[1]];
+  const nextTopLeft = [currentTopLeft[0] + 1, currentTopLeft[1]]; // 이 변수는 블럭의 생성지점을 위로 한칸 올려준거같은데 currentTopLeft[1]이거는 row의 인자를 의미하는거같은데
   const activeBlocks = [];
   let canGoDown = true;
   let currentBlockShape = currentBlock.shape[currentBlock.currentShapeIndex];
@@ -324,6 +341,7 @@ function tick() {
       if (activeBlock(tetrisData[i][j])) { // 현재 움직이는 블럭이면
         activeBlocks.push([i, j]);
         if (InvalidBlock(tetrisData[i + 1] && tetrisData[i + 1][j])) {
+          // i + 1은 currentTopLeft[0] + 1 이렇게 한칸을 위로 올려줘서 그럼
           console.log('아래 블럭이 있다!', i, j, tetrisData[i][j], tetrisData[i + 1] && tetrisData[i + 1][j], JSON.parse(JSON.stringify(tetrisData)));
           canGoDown = false;
         }
@@ -332,23 +350,25 @@ function tick() {
   }
   if (!canGoDown) {
     activeBlocks.forEach((blocks) => {
-      // 질문 11. 이부분이 이해가 안감
-      tetrisData[blocks[0]][blocks[1]] *= 10;
+      tetrisData[blocks[0]][blocks[1]] *= 10; // 10이 row의 길이를 의미하나..? 다른수로 바꾸니까 블럭이 그 이상의 열로 내려가면 사라짐 10 이상은 내려오면 블럭의 색이 바뀜/ 사라짐
     });
     checkRows(); // 지워질 줄 있나 확인
     generate(); // 새 블록 생성
     return false;
   } else if (canGoDown) {
     for (let i = tetrisData.length - 1; i >= 0; i--) {
+      // 변수는 열의 위치를 나타내는것
       const col = tetrisData[i];
       col.forEach((row, j) => {
+        // 조건은 블럭이 존재하며, 블럭의 위치가 10칸을 벗어나지 않았을때
         if (row < 10 && tetrisData[i + 1] && tetrisData[i + 1][j] < 10) {
           tetrisData[i + 1][j] = row;
           tetrisData[i][j] = 0;
+          // 여기가 의미하는건 이제 새롭게 블럭이 생성되면서 행이 새롭게 만들어짐을 의미하는거
         }
       });
     }
-    currentTopLeft = nextTopLeft;
+    currentTopLeft = nextTopLeft; // 다음 tick때 한번 지나가고 나서의 일이니까 currenttopLeft 재 정비
     draw();
     return true;
   }
