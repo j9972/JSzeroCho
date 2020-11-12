@@ -235,7 +235,7 @@ function draw() {
     })
 }
 
-function drawNext() {
+function drawNext() { // 작은 테이블을 만들어 다음에 나올 블럭을 생성ㄴ
     const nextTable = document.querySelector('#next-table');
     nextTable.querySelectorAll('tr').forEach((col, i) => {
         Array.from(col.children).forEach((row,j) => {
