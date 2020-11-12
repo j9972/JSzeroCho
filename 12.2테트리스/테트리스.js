@@ -207,7 +207,7 @@ const InvalidBlock = value => (value === undefined || value >= 10);
 
 function init() {
     const fragment = document.createDocumentFragment();
-    [...Array(20).fill()].forEach((col,i) => {
+    [...Array(20).fill()].forEach((col,i) => {  // fill함수에 인자가 없는건 빈칸으로 20칸을 만들겠다는 의미
         const tr = document.createElement('tr');
         fragment.appendChild(tr);
         [...Array(10).fill()].forEach((row,j) => {
@@ -215,7 +215,7 @@ function init() {
             tr.appendChild(td);
         });
         // 실수 1. fill() 인자에 0을 넣지 않았고 테트리스 데이터에 column을 push를 해야하는데 appendChild를 함
-        const column = Array(10).fill(0);
+        const column = Array(10).fill(0); // 기본적으로 0으로 가지고 있어야 블럭이 있는 칸은 1로써 블럭의 유무를 알려준다
         tetrisData.push(column);
     })
     tetris.appendChild(fragment);
@@ -225,6 +225,7 @@ function draw() {
     tetrisData.forEach((col,i) => {
         col.forEach((row,j) => {
             if(row > 0) { // 문제 1. 뒷 부분 어떻게 색을 넣나?
+              // tetrisData[i][j] 하나의 빈칸을 의미, 얘는 0~9의 idx를 갖음
                 tetris.children[i].children[j].className = tetrisData[i][j] >= 10 ? colors[tetrisData[i][j] / 10 - 1] : colors[tetrisData[i][j] - 1];
             } 
             else {
