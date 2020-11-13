@@ -329,6 +329,7 @@ function checkRows() {
   // 점수를 밑에 표현해주는것
 }
 
+// 아래로 한칸 내리는 함수
 function tick() {
   const nextTopLeft = [currentTopLeft[0] + 1, currentTopLeft[1]]; // 이 변수는 블럭의 생성지점을 위로 한칸 올려준거같은데 currentTopLeft[1]이거는 row의 인자를 의미하는거같은데
   const activeBlocks = [];
@@ -378,15 +379,17 @@ let int = setInterval(tick, 2000);
 init();
 generate();
 
+// 멈추는건 클릭 이벤트로 해서 인터벌 리셋
 document.querySelector('#stop').addEventListener('click', () => {
   clearInterval(int);
 });
 
+
 document.querySelector('#start').addEventListener('click', () => {
-  if(int) {
+  if(int) { // 하고있는 도중에 누르는경우 -> 인터벌 리셋
     clearInterval(int)
   }
-  else {
+  else { // 멈춰 있는경우 다시 시작
     int = setInterval(tick, 2000);
   }
 });
@@ -403,28 +406,29 @@ document.querySelector('#start').addEventListener('click', () => {
 window.addEventListener('keydown', (e) => {
   switch(e.code) {
     case 'ArrowLeft': {
-      const nextTopLeft = [currentTopLeft[0], currentTopLeft[1] - 1];
+      const nextTopLeft = [currentTopLeft[0], currentTopLeft[1] - 1]; // 한칸 왼쪽을 의미
       let isMovable = true;
       let currentBlockShape = currentBlock.shape[currentBlock.currentShapeIndex];
-      for(let i = currentTopLeft[0]; i < currentTopLeft[0] + currentBlockShape.length; i++) {
+      for(let i = currentTopLeft[0]; i < currentTopLeft[0] + currentBlockShape.length; i++) { // 조건은 도형이 생기는 지점의 열을 의미
         if(!isMovable) break;
-        for(let j= currentTopLeft[1]; j < currentTopLeft[1] + currentBlockShape.length; j++) {
-          if(!tetrisData[i] || !tetrisData[i][j]) continue;
+        for(let j= currentTopLeft[1]; j < currentTopLeft[1] + currentBlockShape.length; j++) { // 조건은 도형이 생겼을때 2번째 열을 의미
+          if(!tetrisData[i] || !tetrisData[i][j]) continue; // 데이터의 열이 아니거나 지정칸이 아니면 그 부분은 나오게끔 하기
           if(activeBlock(tetrisData[i][j]) && InvalidBlock(tetrisData[i] && tetrisData[i][j - 1])) {
             console.log(i, j, tetrisData[i][j], tetrisData[i][j-1]);
-            isMovable = false;
+            isMovable = false; // 움직이는 블럭이 못움직이는 블럭을 만났을때 멈추게 만들기
           }
         }
       }
       console.log('left', 'isMovable', isMovable);
       if(isMovable) {
+        // 움직일수있는 도형일때 현재 시작점의 왼쪽 끝 좌표를 지정
         currentTopLeft = nextTopLeft;
         tetrisData.forEach((col,i) => {
           for(let j = 0; j < col.length; j++) {
-            const row = col[j];
-            if(tetrisData[i][j - 1] === 0 && row < 10) {
+            const row = col[j]; // 행에 대해서 지정
+            if(tetrisData[i][j - 1] === 0 && row < 10) { // tetrisData[i][j - 1] === 0 가장 왼쪽을 의미 => 가장 왼쪽이면서 행이 꽉차지 않았을때를 의미
               console.log(row, tetrisData[i][j - 1], i, j);
-              tetrisData[i][j - 1] = row;
+              tetrisData[i][j - 1] = row; // 끝임을 지정하는거
               tetrisData[i][j] = 0;
             }
           }
@@ -462,7 +466,7 @@ window.addEventListener('keydown', (e) => {
       }
       break;
     }
-    case 'ArrowDown': {
+    case 'ArrowDown': { // 아래로 한칸 내리는 함수호출 ( tick )
       tick();
     }
   }
@@ -472,8 +476,8 @@ window.addEventListener('keyup', (e) => {
   switch (e.code) {
     case 'ArrowUp': { // 방향 전환
       let currentBlockShape = currentBlock.shape[currentBlock.currentShapeIndex];
-      let isChangeable = true;
-      const nextShapeIndex = currentBlock.currentShapeIndex + 1 === currentBlock.shape.length
+      let isChangeable = true; // 블럭의 모양을 변하게 만들때 확인하는 flag이다.
+      const nextShapeIndex = currentBlock.currentShapeIndex + 1 === currentBlock.shape.length // 삼항 연산자로 블럭의 모양 idx를 지정
         ? 0
         : currentBlock.currentShapeIndex + 1;
       const nextBlockShape = currentBlock.shape[nextShapeIndex];
