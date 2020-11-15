@@ -286,13 +286,81 @@ function generate() {
 }
 
 function checkRows() {
+    let fullRows = [];
 
+    tetrisData.forEach((col,i) => {
+        let count = 0;
+        col.forEach((row,j) => {
+            if(row > 0) {
+                count++;
+            }
+        })
+        if(count === 10) {
+            fullRows.push(i);
+        }
+    })
+    const fullRowsCount = fullRows.length;
+    tetrisData = tetrisData.filter((row,i) => !fullRows.includes(i))
+
+    for(let i = 0; i < fullRowsCount; i++) {
+        tetrisData.unshift([0,0,0,0,0,0,0,0,0,0]);
+    }
+
+    let score =  parseInt(document.querySelector('#score').textContent);
+    score += fullRowsCount ** 2;
+    document.querySelector('#score').textContent = String(score);
 }
 
 function tick() {
+    let nextTopLeft = [currentTopLeft[0] , currentTopLeft[1] + currentShapeIndex];
+    let canGoDown = true;
+    let currentShapeIndex = currentBlock.shape[currentBlock]
+    for(let i = currentBlock.shape[0]; i < currentBlock.shape[0].length; i++) {
+        if(i < 0 || i > 20) continue;
+        for(let j = currentBlock.shape[1]; j < currentBlock.shape[1].length; j++) {
+            if(IsActiveBlock) {
+
+            } else  {
+                isntChangeAble = true;
+            }
+        }
+    }
 
 }
 
 let int = setInterval(tick, 2000);
 init();
 generate();
+
+document.querySelector('#stop').addEventListener('click', () => {
+    clearInterval(int);
+})
+document.querySelector('#start').addEventListener('click',() => {
+    if(int) {
+        clearInterval(int);
+    }else {
+        int = setInterval(tick,2000);
+    }
+});
+
+window.addEventListener('keydown', (e) => {
+    switch(e.code) {
+        case 'ArrowLeft':
+        break;
+        
+        case 'ArrowRight' :
+        break;
+
+        case 'ArrowDown' :
+        while() {
+            tick();
+        }
+        break;
+    }
+});
+
+window.addEventListener('keyup', (e) => {
+    switch(e.code) {
+
+    }
+});

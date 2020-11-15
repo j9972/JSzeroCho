@@ -384,7 +384,6 @@ document.querySelector('#stop').addEventListener('click', () => {
   clearInterval(int);
 });
 
-
 document.querySelector('#start').addEventListener('click', () => {
   if(int) { // 하고있는 도중에 누르는경우 -> 인터벌 리셋
     clearInterval(int)
