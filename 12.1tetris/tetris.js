@@ -312,20 +312,31 @@ function checkRows() {
 }
 
 function tick() {
-    let nextTopLeft = [currentTopLeft[0] , currentTopLeft[1] + currentShapeIndex];
-    let canGoDown = true;
-    let currentShapeIndex = currentBlock.shape[currentBlock]
-    for(let i = currentBlock.shape[0]; i < currentBlock.shape[0].length; i++) {
+    const nextTopLeft = [currentTopLeft[0] + 1 , currentTopLeft[1]];
+    const activeBlock = [];
+    let canGoDown = false;
+    let currentShapeIndex = currentBlock.shape[currentBlock.currentShapeIndex];
+    for(let i = currentTopLeft[0]; i < currentTopLeft[0] + currentShapeIndex.length; i++) {
         if(i < 0 || i > 20) continue;
-        for(let j = currentBlock.shape[1]; j < currentBlock.shape[1].length; j++) {
-            if(IsActiveBlock) {
-
-            } else  {
-                isntChangeAble = true;
+        for(let j = currentTopLeft[1]; j < currentTopLeft[1] + currentShapeIndex.length; j++) {
+            if(IsActiveBlock(tetrisData[i][j])) {
+                activeBlock.push([i,j]);
+                if(IsInvalidBlock(tetrisData[i + 1] && tetrisData[i + 1][j])) {
+                    canGoDown = true;
+                }
             }
         }
     }
+    if(!canGoDown) {
+        activeBlock.forEach((blocks) => {
+            tetrisData[blocks[0]][blocks[1]] *= 10;
+        })
+        generate();
+        checkRows();
+        return false;
+    }else if (canGoDown){
 
+    }
 }
 
 let int = setInterval(tick, 2000);
