@@ -356,7 +356,7 @@ function tick() {
     checkRows(); // 지워질 줄 있나 확인
     generate(); // 새 블록 생성
     return false;
-  } else if (canGoDown) {
+  } else if (canGoDown) {//d
     for (let i = tetrisData.length - 1; i >= 0; i--) {
       // 변수는 열의 위치를 나타내는것
       const col = tetrisData[i];
