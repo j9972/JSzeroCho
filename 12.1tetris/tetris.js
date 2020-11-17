@@ -278,8 +278,9 @@ function generate() {
 
     if(isGameOver) {
         clearInterval(int);
-        draw();
         alert('over');
+        //init();
+        //draw();
     }else {
         draw();
     }
