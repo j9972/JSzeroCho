@@ -1,0 +1,7 @@
+.randomNum, .actionBox, .resultScreen {
+    text-align: center;
+    position: relative;
+    margin: auto;
+    top: 35%;
+    padding-bottom: 30px;
+}
