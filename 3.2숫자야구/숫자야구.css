@@ -1,0 +1,13 @@
+#presentStatus {
+    position: relative;
+    display: inline-block;
+    text-align: center;
+    margin: 0;
+    vertical-align: middle;
+}
+
+#Box {
+    position: relative;
+    display: inline-block;
+    text-align: center;
+}
